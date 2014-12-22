@@ -8,8 +8,12 @@
 
 #import "SearchRiotTVController.h"
 #import "RiotAPIManager.h"
+#import "Summoners.h"
 
 @interface SearchRiotTVController ()
+
+@property (strong, nonatomic) __block NSMutableArray * searchResults;
+@property (strong, nonatomic) __block NSArray * usersFound;
 
 @end
 
@@ -18,8 +22,38 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.searchResults = [[NSMutableArray alloc] init];
+    
     RiotAPIManager * myManager = [RiotAPIManager sharedManager];
-    [myManager makeTestRequest];
+    NSString * requestString = [myManager createURLStringForRegion:northAmerica
+                                                        apiVersion:@"v1.4"
+                                                         queryType:summonerName
+                                                          andQuery:@"existinabsurdity"];
+    
+    [myManager beginRequestUsingString:requestString
+     withSuccess:^(NSDictionary * results)
+    {
+        
+        self.usersFound = [results allKeys];
+        NSDictionary * searchResults = results[[self.usersFound firstObject]];
+        
+        Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
+                                                               summonerID:searchResults[@"id"]
+                                                            profileIconID:searchResults[@"profileIconId"]
+                                                                 andLevel:[searchResults[@"summonerLevel"] integerValue]];
+        
+        [self.searchResults addObject:newSummoner];
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.tableView reloadData];
+        }];
+
+        
+    } orError:^(NSDictionary * non200Status)
+    {
+        
+    }];
+    
     
 }
 
@@ -31,69 +65,29 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return self.usersFound ? [self.usersFound count] : 0;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"searchCell"];
+    
+    if (self.usersFound)
+    {
+        Summoners * currentSummoner = self.searchResults[indexPath.row];
+        cell.textLabel.text = currentSummoner.summonerName;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Level: %li\t Icon:%@",
+                                     currentSummoner.level, currentSummoner.iconID];
+    }else{
+        cell.textLabel.text = @"No search results";
+    }
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

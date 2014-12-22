@@ -14,6 +14,8 @@
 		B162602B1A478DF500B038AB /* LeagueOfBlarglTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B162602A1A478DF500B038AB /* LeagueOfBlarglTests.m */; };
 		B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260351A478FF600B038AB /* SearchRiotTVController.m */; };
 		B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260381A47900F00B038AB /* RiotAPIManager.m */; };
+		B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B162603D1A47D71400B038AB /* CoreGraphics.framework */; };
+		B16260411A47E93600B038AB /* Summoners.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260401A47E93600B038AB /* Summoners.m */; };
 		BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +46,9 @@
 		B16260351A478FF600B038AB /* SearchRiotTVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchRiotTVController.m; sourceTree = "<group>"; };
 		B16260371A47900F00B038AB /* RiotAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotAPIManager.h; sourceTree = "<group>"; };
 		B16260381A47900F00B038AB /* RiotAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotAPIManager.m; sourceTree = "<group>"; };
+		B162603D1A47D71400B038AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B162603F1A47E93600B038AB /* Summoners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summoners.h; sourceTree = "<group>"; };
+		B16260401A47E93600B038AB /* Summoners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summoners.m; sourceTree = "<group>"; };
 		B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeagueOfBlargl.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */,
 				BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,10 +152,20 @@
 		B162603C1A47903B00B038AB /* Search Table */ = {
 			isa = PBXGroup;
 			children = (
+				B16260421A47E93E00B038AB /* Summoners */,
 				B16260341A478FF600B038AB /* SearchRiotTVController.h */,
 				B16260351A478FF600B038AB /* SearchRiotTVController.m */,
 			);
 			name = "Search Table";
+			sourceTree = "<group>";
+		};
+		B16260421A47E93E00B038AB /* Summoners */ = {
+			isa = PBXGroup;
+			children = (
+				B162603F1A47E93600B038AB /* Summoners.h */,
+				B16260401A47E93600B038AB /* Summoners.m */,
+			);
+			name = Summoners;
 			sourceTree = "<group>";
 		};
 		C3DADD28E0C0E4ADBC000353 /* Pods */ = {
@@ -164,6 +180,7 @@
 		DEC33080B44B942B8240C54D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B162603D1A47D71400B038AB /* CoreGraphics.framework */,
 				B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */,
 			);
 			name = Frameworks;
@@ -307,6 +324,7 @@
 				B16260111A478DF500B038AB /* main.m in Sources */,
 				B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */,
 				B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */,
+				B16260411A47E93600B038AB /* Summoners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
