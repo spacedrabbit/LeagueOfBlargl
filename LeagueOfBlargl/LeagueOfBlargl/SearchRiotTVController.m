@@ -24,25 +24,30 @@
     
     self.searchResults = [[NSMutableArray alloc] init];
     
+    NSString * queryString = @"existinabsurdity,mister strickland,mr dale gribble";
+    NSString * utf8Query = [queryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     RiotAPIManager * myManager = [RiotAPIManager sharedManager];
     NSString * requestString = [myManager createURLStringForRegion:northAmerica
                                                         apiVersion:@"v1.4"
                                                          queryType:summonerName
-                                                          andQuery:@"existinabsurdity"];
+                                                          andQuery:utf8Query];
     
     [myManager beginRequestUsingString:requestString
      withSuccess:^(NSDictionary * results)
     {
         
         self.usersFound = [results allKeys];
-        NSDictionary * searchResults = results[[self.usersFound firstObject]];
-        
-        Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
-                                                               summonerID:searchResults[@"id"]
-                                                            profileIconID:searchResults[@"profileIconId"]
-                                                                 andLevel:[searchResults[@"summonerLevel"] integerValue]];
-        
-        [self.searchResults addObject:newSummoner];
+        for (NSString * users in self.usersFound) {
+            NSDictionary * searchResults = results[users];
+            
+            Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
+                                                                   summonerID:searchResults[@"id"]
+                                                                profileIconID:searchResults[@"profileIconId"]
+                                                                     andLevel:[searchResults[@"summonerLevel"] integerValue]];
+            
+            [self.searchResults addObject:newSummoner];
+
+        }
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.tableView reloadData];
@@ -87,6 +92,13 @@
     }
     
     return cell;
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (section == 0)
+    {
+        return @"Summoners Found";
+    }
+    return nil;
 }
 
 
