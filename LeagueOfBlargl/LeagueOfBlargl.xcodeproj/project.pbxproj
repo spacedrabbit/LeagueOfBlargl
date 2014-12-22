@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B16260111A478DF500B038AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260101A478DF500B038AB /* main.m */; };
+		B16260141A478DF500B038AB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260131A478DF500B038AB /* AppDelegate.m */; };
+		B162601C1A478DF500B038AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B162601B1A478DF500B038AB /* Images.xcassets */; };
+		B162601F1A478DF500B038AB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B162601D1A478DF500B038AB /* LaunchScreen.xib */; };
+		B162602B1A478DF500B038AB /* LeagueOfBlarglTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B162602A1A478DF500B038AB /* LeagueOfBlarglTests.m */; };
+		B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260351A478FF600B038AB /* SearchRiotTVController.m */; };
+		B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260381A47900F00B038AB /* RiotAPIManager.m */; };
+		BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B16260251A478DF500B038AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B16260031A478DF500B038AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B162600A1A478DF500B038AB;
+			remoteInfo = LeagueOfBlargl;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0942B3D01A06F9D1E1271BAF /* Pods-LeagueOfBlargl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeagueOfBlargl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeagueOfBlargl/Pods-LeagueOfBlargl.debug.xcconfig"; sourceTree = "<group>"; };
+		ABD88F70833B3BF9FEF0322E /* Pods-LeagueOfBlargl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeagueOfBlargl.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeagueOfBlargl/Pods-LeagueOfBlargl.release.xcconfig"; sourceTree = "<group>"; };
+		B162600B1A478DF500B038AB /* LeagueOfBlargl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeagueOfBlargl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B162600F1A478DF500B038AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B16260101A478DF500B038AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B16260121A478DF500B038AB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B16260131A478DF500B038AB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B162601B1A478DF500B038AB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B162601E1A478DF500B038AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		B16260241A478DF500B038AB /* LeagueOfBlarglTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeagueOfBlarglTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B16260291A478DF500B038AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B162602A1A478DF500B038AB /* LeagueOfBlarglTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LeagueOfBlarglTests.m; sourceTree = "<group>"; };
+		B16260341A478FF600B038AB /* SearchRiotTVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchRiotTVController.h; sourceTree = "<group>"; };
+		B16260351A478FF600B038AB /* SearchRiotTVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchRiotTVController.m; sourceTree = "<group>"; };
+		B16260371A47900F00B038AB /* RiotAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotAPIManager.h; sourceTree = "<group>"; };
+		B16260381A47900F00B038AB /* RiotAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotAPIManager.m; sourceTree = "<group>"; };
+		B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeagueOfBlargl.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B16260081A478DF500B038AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B16260211A478DF500B038AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B16260021A478DF500B038AB = {
+			isa = PBXGroup;
+			children = (
+				B162600D1A478DF500B038AB /* LeagueOfBlargl */,
+				B16260271A478DF500B038AB /* LeagueOfBlarglTests */,
+				B162600C1A478DF500B038AB /* Products */,
+				C3DADD28E0C0E4ADBC000353 /* Pods */,
+				DEC33080B44B942B8240C54D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B162600C1A478DF500B038AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B162600B1A478DF500B038AB /* LeagueOfBlargl.app */,
+				B16260241A478DF500B038AB /* LeagueOfBlarglTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B162600D1A478DF500B038AB /* LeagueOfBlargl */ = {
+			isa = PBXGroup;
+			children = (
+				B162603A1A47901400B038AB /* API Manager */,
+				B162603B1A47902A00B038AB /* App Delegate */,
+				B162603C1A47903B00B038AB /* Search Table */,
+				B162600E1A478DF500B038AB /* Supporting Files */,
+			);
+			path = LeagueOfBlargl;
+			sourceTree = "<group>";
+		};
+		B162600E1A478DF500B038AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B162601D1A478DF500B038AB /* LaunchScreen.xib */,
+				B162601B1A478DF500B038AB /* Images.xcassets */,
+				B162600F1A478DF500B038AB /* Info.plist */,
+				B16260101A478DF500B038AB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B16260271A478DF500B038AB /* LeagueOfBlarglTests */ = {
+			isa = PBXGroup;
+			children = (
+				B162602A1A478DF500B038AB /* LeagueOfBlarglTests.m */,
+				B16260281A478DF500B038AB /* Supporting Files */,
+			);
+			path = LeagueOfBlarglTests;
+			sourceTree = "<group>";
+		};
+		B16260281A478DF500B038AB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B16260291A478DF500B038AB /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B162603A1A47901400B038AB /* API Manager */ = {
+			isa = PBXGroup;
+			children = (
+				B16260371A47900F00B038AB /* RiotAPIManager.h */,
+				B16260381A47900F00B038AB /* RiotAPIManager.m */,
+			);
+			name = "API Manager";
+			sourceTree = "<group>";
+		};
+		B162603B1A47902A00B038AB /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				B16260121A478DF500B038AB /* AppDelegate.h */,
+				B16260131A478DF500B038AB /* AppDelegate.m */,
+			);
+			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		B162603C1A47903B00B038AB /* Search Table */ = {
+			isa = PBXGroup;
+			children = (
+				B16260341A478FF600B038AB /* SearchRiotTVController.h */,
+				B16260351A478FF600B038AB /* SearchRiotTVController.m */,
+			);
+			name = "Search Table";
+			sourceTree = "<group>";
+		};
+		C3DADD28E0C0E4ADBC000353 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0942B3D01A06F9D1E1271BAF /* Pods-LeagueOfBlargl.debug.xcconfig */,
+				ABD88F70833B3BF9FEF0322E /* Pods-LeagueOfBlargl.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DEC33080B44B942B8240C54D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B162600A1A478DF500B038AB /* LeagueOfBlargl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B162602E1A478DF500B038AB /* Build configuration list for PBXNativeTarget "LeagueOfBlargl" */;
+			buildPhases = (
+				543929B160AF991C195470B0 /* Check Pods Manifest.lock */,
+				B16260071A478DF500B038AB /* Sources */,
+				B16260081A478DF500B038AB /* Frameworks */,
+				B16260091A478DF500B038AB /* Resources */,
+				2782458CCE2B11BE9AC7E5BC /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LeagueOfBlargl;
+			productName = LeagueOfBlargl;
+			productReference = B162600B1A478DF500B038AB /* LeagueOfBlargl.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B16260231A478DF500B038AB /* LeagueOfBlarglTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B16260311A478DF500B038AB /* Build configuration list for PBXNativeTarget "LeagueOfBlarglTests" */;
+			buildPhases = (
+				B16260201A478DF500B038AB /* Sources */,
+				B16260211A478DF500B038AB /* Frameworks */,
+				B16260221A478DF500B038AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B16260261A478DF500B038AB /* PBXTargetDependency */,
+			);
+			name = LeagueOfBlarglTests;
+			productName = LeagueOfBlarglTests;
+			productReference = B16260241A478DF500B038AB /* LeagueOfBlarglTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B16260031A478DF500B038AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = com.SRLabs;
+				TargetAttributes = {
+					B162600A1A478DF500B038AB = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					B16260231A478DF500B038AB = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = B162600A1A478DF500B038AB;
+					};
+				};
+			};
+			buildConfigurationList = B16260061A478DF500B038AB /* Build configuration list for PBXProject "LeagueOfBlargl" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B16260021A478DF500B038AB;
+			productRefGroup = B162600C1A478DF500B038AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B162600A1A478DF500B038AB /* LeagueOfBlargl */,
+				B16260231A478DF500B038AB /* LeagueOfBlarglTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B16260091A478DF500B038AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B162601F1A478DF500B038AB /* LaunchScreen.xib in Resources */,
+				B162601C1A478DF500B038AB /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B16260221A478DF500B038AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2782458CCE2B11BE9AC7E5BC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LeagueOfBlargl/Pods-LeagueOfBlargl-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		543929B160AF991C195470B0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B16260071A478DF500B038AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B16260141A478DF500B038AB /* AppDelegate.m in Sources */,
+				B16260111A478DF500B038AB /* main.m in Sources */,
+				B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */,
+				B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B16260201A478DF500B038AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B162602B1A478DF500B038AB /* LeagueOfBlarglTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B16260261A478DF500B038AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B162600A1A478DF500B038AB /* LeagueOfBlargl */;
+			targetProxy = B16260251A478DF500B038AB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B162601D1A478DF500B038AB /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B162601E1A478DF500B038AB /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B162602C1A478DF500B038AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B162602D1A478DF500B038AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B162602F1A478DF500B038AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0942B3D01A06F9D1E1271BAF /* Pods-LeagueOfBlargl.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LeagueOfBlargl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B16260301A478DF500B038AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ABD88F70833B3BF9FEF0322E /* Pods-LeagueOfBlargl.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LeagueOfBlargl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B16260321A478DF500B038AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LeagueOfBlarglTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeagueOfBlargl.app/LeagueOfBlargl";
+			};
+			name = Debug;
+		};
+		B16260331A478DF500B038AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LeagueOfBlarglTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LeagueOfBlargl.app/LeagueOfBlargl";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B16260061A478DF500B038AB /* Build configuration list for PBXProject "LeagueOfBlargl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B162602C1A478DF500B038AB /* Debug */,
+				B162602D1A478DF500B038AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B162602E1A478DF500B038AB /* Build configuration list for PBXNativeTarget "LeagueOfBlargl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B162602F1A478DF500B038AB /* Debug */,
+				B16260301A478DF500B038AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B16260311A478DF500B038AB /* Build configuration list for PBXNativeTarget "LeagueOfBlarglTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B16260321A478DF500B038AB /* Debug */,
+				B16260331A478DF500B038AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B16260031A478DF500B038AB /* Project object */;
+}
