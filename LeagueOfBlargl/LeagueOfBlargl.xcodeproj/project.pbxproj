@@ -16,6 +16,8 @@
 		B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260381A47900F00B038AB /* RiotAPIManager.m */; };
 		B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B162603D1A47D71400B038AB /* CoreGraphics.framework */; };
 		B16260411A47E93600B038AB /* Summoners.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260401A47E93600B038AB /* Summoners.m */; };
+		B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B1EF81A48FB82000D29AD /* RiotDataManager.m */; };
+		B18B1EFC1A48FC0F000D29AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18B1EFB1A48FC0F000D29AD /* UIKit.framework */; };
 		BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,9 @@
 		B162603D1A47D71400B038AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B162603F1A47E93600B038AB /* Summoners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summoners.h; sourceTree = "<group>"; };
 		B16260401A47E93600B038AB /* Summoners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summoners.m; sourceTree = "<group>"; };
+		B18B1EF71A48FB82000D29AD /* RiotDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDataManager.h; sourceTree = "<group>"; };
+		B18B1EF81A48FB82000D29AD /* RiotDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDataManager.m; sourceTree = "<group>"; };
+		B18B1EFB1A48FC0F000D29AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeagueOfBlargl.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -57,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B18B1EFC1A48FC0F000D29AD /* UIKit.framework in Frameworks */,
 				B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */,
 				BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */,
 			);
@@ -95,6 +101,7 @@
 		B162600D1A478DF500B038AB /* LeagueOfBlargl */ = {
 			isa = PBXGroup;
 			children = (
+				B18B1EFA1A48FB8A000D29AD /* Data Manager */,
 				B162603A1A47901400B038AB /* API Manager */,
 				B162603B1A47902A00B038AB /* App Delegate */,
 				B162603C1A47903B00B038AB /* Search Table */,
@@ -168,6 +175,15 @@
 			name = Summoners;
 			sourceTree = "<group>";
 		};
+		B18B1EFA1A48FB8A000D29AD /* Data Manager */ = {
+			isa = PBXGroup;
+			children = (
+				B18B1EF71A48FB82000D29AD /* RiotDataManager.h */,
+				B18B1EF81A48FB82000D29AD /* RiotDataManager.m */,
+			);
+			name = "Data Manager";
+			sourceTree = "<group>";
+		};
 		C3DADD28E0C0E4ADBC000353 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +196,7 @@
 		DEC33080B44B942B8240C54D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B18B1EFB1A48FC0F000D29AD /* UIKit.framework */,
 				B162603D1A47D71400B038AB /* CoreGraphics.framework */,
 				B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */,
 			);
@@ -323,6 +340,7 @@
 				B16260141A478DF500B038AB /* AppDelegate.m in Sources */,
 				B16260111A478DF500B038AB /* main.m in Sources */,
 				B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */,
+				B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */,
 				B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */,
 				B16260411A47E93600B038AB /* Summoners.m in Sources */,
 			);

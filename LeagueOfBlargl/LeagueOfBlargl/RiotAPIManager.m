@@ -7,6 +7,7 @@
 //
 
 #import "RiotAPIManager.h"
+#import "RiotDataManager.h"
 #import <AFNetworking/AFNetworking.h>
 
 // ---------------------//
@@ -16,6 +17,12 @@ static NSString * const kRiotBaseURL = @"https://<region>.api.pvp.net/api/lol/<r
 
 static NSString * const kRegionPlaceholder = @"<region>";
 
+  // == STATIC DATA == //
+static NSString * const kStaticDataBase = @"http://ddragon.leagueoflegends.com/cdn/";
+static NSString * const kDragonVersionQuery = @"/api/lol/static-data/<region>/v1.2/realm";
+
+static NSString * const kProfileIconDirectory = @"http://ddragon.leagueoflegends.com/cdn/4.20.1/data/en_US/profileicon.json";
+static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.com/cdn/4.20.1/img/profileicon/588.png";
 
 // ---------------------//
 // --    Interface   -- //
@@ -32,6 +39,7 @@ static NSString * const kRegionPlaceholder = @"<region>";
 // -- Implementation -- //
 @implementation RiotAPIManager
 
+#pragma mark - INITIALIZERS & SINGLETONS
 +(instancetype) sharedManager
 {
     static RiotAPIManager * _sharedManager = nil;
@@ -53,40 +61,82 @@ static NSString * const kRegionPlaceholder = @"<region>";
     return self;
 }
 
--(void)beginRequestUsingString:(NSString *)urlString
-                   withSuccess:(void (^)(NSDictionary *))success
-                       orError:(void (^)(NSDictionary *))error
+
+/**********************************************************************************
+ *
+ *              SEARCH TYPES AND HANDLING
+ *
+ ***********************************************************************************/
+#pragma mark - SEARCH_TYPE-SPECIFIC METHODS
+
+-(void) searchRiotFor:(LoLSearchType)type
+            withQuery:(NSString *)query
+            forRegion:(LoLRegions)region
+       withCompletion:(void(^)(NSDictionary *))completion
 {
     
-    NSURL * requestURL = [NSURL URLWithString:urlString];
-    self.httpSessionManager = [[AFHTTPSessionManager alloc]
-                               initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSString * requestString = [self createURLStringForRegion:region
+                                                   apiVersion:@"v1.4"
+                                                    queryType:type
+                                                     andQuery:query];
     
-    NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[requestURL absoluteString]
-                                                             parameters:@{ @"api_key" : kRiotAPIKey }
-        success:^(NSURLSessionDataTask *task, id responseObject)
-        {
-            // typecasts so that I can check the status code
-            // otherwise task.response return type is NSURLResponse
-            NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)task.response;
-            if (httpResponse.statusCode == 200)
-            {
-                success(responseObject);
-            }else{
-                NSLog(@"Non 200 Status Code Encountered: %ld", (long)httpResponse.statusCode);
-                error(responseObject);
-            }
-        }
-        failure:^(NSURLSessionDataTask *task, NSError *error)
-        {
-            NSLog(@"Error Encountered With Request: %@", error);
-        }];
-    [summonerTask resume];
+    NSString * utf8Query = [requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL * requestURL = [NSURL URLWithString:utf8Query];
+
+    [self beginRequestWithURL:requestURL
+                  withSuccess:^(NSDictionary * jsonData)
+     {
+         NSLog(@"Successful request, bubbling up: %@", jsonData);
+         completion(jsonData);
+     }
+                      orError:^(NSDictionary * jsonData)
+     {
+         NSLog(@"API Manager has encountered the following problematic JSON data: %@", jsonData);
+         NSLog(@"Issue logged in [%@ %@]", NSStringFromClass([RiotAPIManager class]), NSStringFromSelector(@selector(searchRiotFor:withQuery:forRegion:withCompletion:)) );
+         completion(nil);
+     }];
 
 }
 
+/**********************************************************************************
+ *
+ *              SEARCH AGNOSTIC METHODS
+ *
+ ***********************************************************************************/
+// -- SEARCH TYPE AGNOSTIC, WILL JUST GET JSON!! -- //
+#pragma mark - API CALLS
+-(void)beginRequestWithURL:(NSURL *)url
+               withSuccess:(void (^)(NSDictionary *))success
+                   orError:(void (^)(NSDictionary *))error
+{
+    
+    self.httpSessionManager = [[AFHTTPSessionManager alloc]
+                               initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[url absoluteString]
+                                                             parameters:@{ @"api_key" : kRiotAPIKey }
+                                                                success:^(NSURLSessionDataTask *task, id responseObject)
+                                            {
+                                                // typecasts so that I can check the status code
+                                                // otherwise task.response return type is NSURLResponse
+                                                NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)task.response;
+                                                if (httpResponse.statusCode == 200)
+                                                {
+                                                    success(responseObject);
+                                                }else{
+                                                    NSLog(@"Non 200 Status Code Encountered: %ld", (long)httpResponse.statusCode);
+                                                    error(responseObject);
+                                                }
+                                            }
+                                                                failure:^(NSURLSessionDataTask *task, NSError *error)
+                                            {
+                                                NSLog(@"Error Encountered With Request: %@", error);
+                                            }];
+    [summonerTask resume];
+    
+}
 
-#pragma mark - URL CREATION -
+#pragma mark - URL CREATION
 // -- Creates the full URL String -- //
 -(NSString *) createURLString:(NSString *)baseURL
                    WithRegion:(LoLRegions)region
@@ -117,7 +167,14 @@ static NSString * const kRegionPlaceholder = @"<region>";
                         andQuery:query];
 }
 
-#pragma mark - HELPERS -
+
+
+/**********************************************************************************
+ *
+ *              RANDO HELPER METHODS & CUSTOM SETTERS -- SELF EXPLANATORY
+ *
+ ***********************************************************************************/
+#pragma mark - HELPERS
 // -- helpers -- //
 -(void)changeRegionTo:(LoLRegions)region{
     self.selectedRegion = region;
@@ -148,7 +205,6 @@ static NSString * const kRegionPlaceholder = @"<region>";
     }
     return regionString;
 }
-
 -(NSDictionary *)searchTypeKey{
     if (!_searchTypeKey) {
         _searchTypeKey = @{

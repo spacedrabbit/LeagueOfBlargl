@@ -29,14 +29,20 @@ typedef NS_ENUM(NSInteger, LoLSearchType) {
 
 +(instancetype) sharedManager;
 
--(void) beginRequestUsingString:(NSString *)urlString
-                    withSuccess:(void(^)(NSDictionary *))success
-                        orError:(void(^)(NSDictionary *))error;
+-(void) beginRequestWithURL:(NSURL *)urlString
+                withSuccess:(void(^)(NSDictionary *))success
+                    orError:(void(^)(NSDictionary *))error;
 
 -(NSString *) createURLStringForRegion:(LoLRegions)region
                             apiVersion:(NSString *)version
                              queryType:(LoLSearchType)type
                               andQuery:(NSString *)query;
+
+-(void) searchRiotFor:(LoLSearchType)type
+            withQuery:(NSString *)query
+            forRegion:(LoLRegions)region
+       withCompletion:(void(^)(NSDictionary *))completion;
+
 // -- helpers -- //
 -(void) changeRegionTo:(LoLRegions)region;
 -(LoLRegions) currentRegion;
