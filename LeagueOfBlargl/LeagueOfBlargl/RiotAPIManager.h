@@ -19,8 +19,12 @@ typedef NS_ENUM(NSInteger, LoLRegions) {
 };
 typedef NS_ENUM(NSInteger, LoLSearchType) {
     summonerName = 0,
-    summonerID
+    summonerID,
+    static_data
 };
+
+typedef NSString* SummonerName, SummonerID, StaticData;
+
 // -- TYPEDEF REFERENCE VALUES -- //
 
 
@@ -28,6 +32,7 @@ typedef NS_ENUM(NSInteger, LoLSearchType) {
 @interface RiotAPIManager : NSObject
 
 +(instancetype) sharedManager;
+
 
 -(void) beginRequestWithURL:(NSURL *)urlString
                 withSuccess:(void(^)(NSDictionary *))success

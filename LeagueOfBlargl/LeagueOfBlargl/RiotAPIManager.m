@@ -10,29 +10,72 @@
 #import "RiotDataManager.h"
 #import <AFNetworking/AFNetworking.h>
 
+@interface RegionAPIVersionInfo : NSObject
+
+-(instancetype) initWithJSON:(NSDictionary *)jsonData;
+@property (strong, nonatomic) NSString * dataDragonVersion;
+@property (strong, nonatomic) NSString * currentGameVersion;
+@property (strong, nonatomic) NSString * language;
+@property (strong, nonatomic) NSString * championDataVersion;
+@property (strong, nonatomic) NSString * itemDataVersion;
+@property (strong, nonatomic) NSString * languageDataVersion;
+@property (strong, nonatomic) NSString * masteryDataVersion;
+@property (strong, nonatomic) NSString * profileIconDataVersion;
+@property (strong, nonatomic) NSString * runeInfoDataVersion;
+@property (strong, nonatomic) NSString * summonerDataVersion;
+
+@end
+
+@implementation RegionAPIVersionInfo
+
+-(instancetype)initWithJSON:(NSDictionary *)jsonData{
+    self = [super init];
+    if (self) {
+        
+        _dataDragonVersion = jsonData[@"dd"];
+        _currentGameVersion = jsonData[@"v"];
+        _language = jsonData[@"l"];
+        _championDataVersion = jsonData[@"n"][@"champion"];
+        _itemDataVersion = jsonData[@"n"][@"item"];
+        _languageDataVersion  = jsonData[@"n"][@"language"];
+        _masteryDataVersion = jsonData[@"n"][@"mastery"];
+        _profileIconDataVersion = jsonData[@"n"][@"profileicon"];
+        _runeInfoDataVersion = jsonData[@"n"][@"rune"];
+        _summonerDataVersion = jsonData[@"n"][@"summoner"];
+        
+        NSLog(@"Region version created! %@", self);
+    }
+    return self;
+}
+@end
+
+
 // ---------------------//
 // --    Constants   -- //
 static NSString * const kRiotAPIKey = @"e84a851b-a433-46b8-8b3f-8578b78a53e4";
-static NSString * const kRiotBaseURL = @"https://<region>.api.pvp.net/api/lol/<region>";
+static NSString * const kRiotBaseURL = @"https://<region>.api.pvp.net/api/lol/<region>/<version>";
 
 static NSString * const kRegionPlaceholder = @"<region>";
+static NSString * const kVersionPlaceholder = @"<version>";
 
   // == STATIC DATA == //
-static NSString * const kStaticDataBase = @"http://ddragon.leagueoflegends.com/cdn/";
-static NSString * const kDragonVersionQuery = @"/api/lol/static-data/<region>/v1.2/realm";
+static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api/lol/static-data/<region>/<version>";
 
-static NSString * const kProfileIconDirectory = @"http://ddragon.leagueoflegends.com/cdn/4.20.1/data/en_US/profileicon.json";
-static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.com/cdn/4.20.1/img/profileicon/588.png";
 
 // ---------------------//
 // --    Interface   -- //
 @interface RiotAPIManager ()
-
 @property (nonatomic) NSInteger selectedRegion;
+
 @property (strong, nonatomic) NSDictionary * searchTypeKey;
+@property (strong, nonatomic) NSDictionary * regionKey;
+
 @property (strong, nonatomic) AFHTTPSessionManager * httpSessionManager;
 
+@property (strong, nonatomic) RegionAPIVersionInfo * versionInfo;
+
 @end
+
 
 
 // ---------------------//
@@ -57,6 +100,7 @@ static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.c
         _selectedRegion = northAmerica; // default
         _httpSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         
+        [self getRealmDataForCurrentRegion];
     }
     return self;
 }
@@ -144,15 +188,20 @@ static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.c
                     queryType:(LoLSearchType)type
                      andQuery:(NSString *)query
 {
+    /* these two calls need refactoring  */
     
-    NSNumber * queryType = [NSNumber numberWithInteger:type];
-    NSString * regionString = [self stringFromRegion:region];
-    NSString * udpatedBaseURL = [kRiotBaseURL stringByReplacingOccurrencesOfString:kRegionPlaceholder
+    // get strings from dictionary
+    NSString * queryType = self.searchTypeKey[[NSNumber numberWithInteger:type]];
+    NSString * regionString = self.regionKey[[NSNumber numberWithInteger:region]];
+    
+    //replace <placeholder> strings with correct info
+    NSString * updatedRegionURL = [baseURL stringByReplacingOccurrencesOfString:kRegionPlaceholder
                                                                         withString:regionString];
-    NSString * fullURLString = [NSString stringWithFormat:@"%@/%@/%@/%@",
-                                udpatedBaseURL, version, self.searchTypeKey[queryType],query];
+    NSString * updatedVersionURL = [updatedRegionURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
+                                                                               withString:version];
     
-    return fullURLString;
+    return [NSString stringWithFormat:@"%@/%@%@", updatedVersionURL, queryType, query];
+    
 }
 // -- this is a public facing method as the secret key will be internal
 // -- to this class
@@ -167,6 +216,46 @@ static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.c
                         andQuery:query];
 }
 
+
+/**********************************************************************************
+ *
+ *      STATIC API CALLS
+ *
+ ***********************************************************************************/
+-(void) getRealmDataForCurrentRegion{
+    
+    NSURL *realmQuery = [NSURL URLWithString:[self createURLString:kDragonVersionQuery
+                                                       WithRegion:self.currentRegion
+                                                       apiVersion:@"v1.2"
+                                                        queryType:static_data
+                                                         andQuery:@""]];
+    
+    // does this cause a retain cycle? or does __block fix that?
+    /* 
+     answer: No doesn't cause retain, yes __block prevents it
+     
+     In ARC this(marking a variable as a __block) causes the variable to be automatically retained, so that it can be safely referenced within the block implementation. In the previous example, then, aString is sent a retain message when captured in the block context.
+     
+     In the Objective-C and Objective-C++ languages, we allow the __weak specifier for __block variables of object type. [...] This qualifier causes these variables to be kept without retain messages being sent. This knowingly leads to dangling pointers if the Block (or a copy) outlives the lifetime of this object.
+     
+     see: http://stackoverflow.com/questions/19227982/using-block-and-weak (awesome explanantion)
+     
+     */
+    __block RegionAPIVersionInfo * weakVersionInfo = self.versionInfo;
+    [self beginRequestWithURL:realmQuery
+                  withSuccess:^(NSDictionary * json)
+            {
+                NSLog(@"Realm data collected");
+                
+                weakVersionInfo = [[RegionAPIVersionInfo alloc] initWithJSON:json];
+                
+            }
+                      orError:^(NSDictionary * jsonError)
+            {
+                NSLog(@"Realm data from DataDragon not found: %@", jsonError);
+            }];
+    
+}
 
 
 /**********************************************************************************
@@ -205,15 +294,33 @@ static NSString * const tProfileIconExample = @"http://ddragon.leagueoflegends.c
     }
     return regionString;
 }
+
+// Getters for enum keys
 -(NSDictionary *)searchTypeKey{
     if (!_searchTypeKey) {
         _searchTypeKey = @{
                            
-                           [NSNumber numberWithFloat:summonerName]  :   @"summoner/by-name",
-                           [NSNumber numberWithFloat:summonerID]    :   @"summoner"
+                           [NSNumber numberWithFloat:summonerName]  :   @"summoner/by-name/",
+                           [NSNumber numberWithFloat:summonerID]    :   @"summoner/",
+                           [NSNumber numberWithFloat:static_data]   :   @"realm"
                            
                            };
     }
     return _searchTypeKey;
 }
+-(NSDictionary *)regionKey{
+    if (!_regionKey) {
+        _regionKey = @{
+                       
+                        [NSNumber numberWithInteger:    northAmerica]   : @"na",
+                        [NSNumber numberWithInteger:    euNordic]       : @"eune",
+                        [NSNumber numberWithInteger:    euWest]         : @"euw",
+                        [NSNumber numberWithInteger:    global]         : @"global",
+                        [NSNumber numberWithInteger:    korea]          : @"kr",
+                        [NSNumber numberWithInteger:    oceanic]        : @"oce"
+                      };
+    }
+    return _regionKey;
+}
+
 @end
