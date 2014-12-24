@@ -11,15 +11,58 @@
 
 @interface AppDelegate ()
 
+@property (strong, nonatomic) UIColor * riotBlue;
+@property (strong, nonatomic) UIColor * riotYellow;
+@property (strong, nonatomic) UIColor * riotOrange;
+
+// -- blue color scale -- //
+@property (strong, nonatomic) UIColor * riotDeepBlue;
+@property (strong, nonatomic) UIColor * riotMediumWellBlue;
+@property (strong, nonatomic) UIColor * riotMediumBlue;
+@property (strong, nonatomic) UIColor * riotMediumRareBlue;
+@property (strong, nonatomic) UIColor * riotRareBlue;
+
+@property (strong, nonatomic) UIFont  * riotiOSFont;
+@property (strong, nonatomic) NSShadow * riotiOSFontShadow;
+
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //119	149	168
+    self.riotBlue = [UIColor colorWithRed:0.059 green:0.343 blue:0.874 alpha:.7000];
+    self.riotYellow = [UIColor colorWithRed:1.000 green:0.937 blue:0.046 alpha:1.000];
+    self.riotOrange = [UIColor colorWithRed:1.000 green:0.613 blue:0.046 alpha:1.000];
+    
+    self.riotDeepBlue = [UIColor colorWithRed:0.076 green:0.141 blue:0.253 alpha:1.000];
+    self.riotMediumWellBlue = [UIColor colorWithRed:0.167 green:0.289 blue:0.430 alpha:1.000];
+    self.riotMediumBlue = [UIColor colorWithRed:0.610 green:0.735 blue:0.854 alpha:1.000];
+    self.riotMediumRareBlue = [UIColor colorWithRed:0.721 green:0.800 blue:0.911 alpha:1.000];
+    self.riotRareBlue = [UIColor colorWithRed:0.855 green:0.875 blue:0.975 alpha:1.000];
+    
+    self.riotiOSFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22.0];
+    self.riotiOSFontShadow = [[NSShadow alloc] init];
+    [self.riotiOSFontShadow setShadowColor:self.riotDeepBlue];
+    [self.riotiOSFontShadow setShadowOffset:CGSizeMake(1, 1)];
+    [self.riotiOSFontShadow setShadowBlurRadius:10.0];
     
     SearchRiotTVController * rootViewController = [[SearchRiotTVController alloc] initWithStyle:UITableViewStylePlain];
     UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController: rootViewController];
+    
+    
+    
+    [[UINavigationBar appearance] setBarTintColor:self.riotDeepBlue];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                            NSFontAttributeName : self.riotiOSFont,
+                                                            NSForegroundColorAttributeName : [UIColor whiteColor] ,
+                                                            NSShadowAttributeName : self.riotiOSFontShadow
+                                                           }];
+    [[UINavigationBar appearance] setTranslucent:YES];
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+    [[UINavigationBar appearance] setTintColor:self.riotMediumRareBlue];
+    
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:navController];
