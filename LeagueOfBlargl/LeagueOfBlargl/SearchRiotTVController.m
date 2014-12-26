@@ -90,36 +90,36 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     
     [self.navigationItem setTitle:@"League of Blargl"];
     
-//    RiotAPIManager * myManager = [RiotAPIManager sharedManager];
-//    NSString * queryString = @"existinabsurdity,mister strickland,mr dale gribble";
-//    
-//    self.searchResults = [[NSMutableArray alloc] init];
-//
-//    [myManager searchRiotFor:summonerName
-//                   withQuery:queryString
-//                   forRegion:northAmerica
-//              withCompletion:^(NSDictionary * jsonResults)
-//    {
-//        //this will eventually be handled by the data manager
-//        self.usersFound = [jsonResults allKeys];
-//        for (NSString * users in self.usersFound) {
-//            NSDictionary * searchResults = jsonResults[users];
-//            
-//            Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
-//                                                                   summonerID:searchResults[@"id"]
-//                                                                profileIconID:searchResults[@"profileIconId"]
-//                                                                     andLevel:[searchResults[@"summonerLevel"] integerValue]];
-//            
-//            [self.searchResults addObject:newSummoner];
-//            
-//        }
-//        
-//        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//            
-//            [self.tableView reloadData];
-//        }];
-//
-//    }];
+    RiotAPIManager * myManager = [RiotAPIManager sharedManager];
+    NSString * queryString = @"existinabsurdity,mister strickland,mr dale gribble";
+    
+    self.searchResults = [[NSMutableArray alloc] init];
+
+    [myManager searchRiotFor:summonerName
+                   withQuery:queryString
+                   forRegion:northAmerica
+              withCompletion:^(NSDictionary * jsonResults)
+    {
+        //this will eventually be handled by the data manager
+        self.usersFound = [jsonResults allKeys];
+        for (NSString * users in self.usersFound) {
+            NSDictionary * searchResults = jsonResults[users];
+            
+            Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
+                                                                   summonerID:searchResults[@"id"]
+                                                                profileIconID:searchResults[@"profileIconId"]
+                                                                     andLevel:[searchResults[@"summonerLevel"] integerValue]];
+            
+            [self.searchResults addObject:newSummoner];
+            
+        }
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            
+            [self.tableView reloadData];
+        }];
+
+    }];
     
 }
 
@@ -162,8 +162,10 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"searchCell"];
+    cell.backgroundColor = [UIColor colorWithRed:0.411 green:0.723 blue:1.000 alpha:1.000];
+    
     cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+    cell.detailTextLabel.textColor = [UIColor colorWithRed:0.849 green:0.801 blue:0.532 alpha:1.000];
     
     if (self.usersFound)
     {
