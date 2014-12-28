@@ -111,7 +111,8 @@ UISearchResultsUpdating, UIScrollViewDelegate>
                                                                      andLevel:[searchResults[@"summonerLevel"] integerValue]];
             
             [self.searchResults addObject:newSummoner];
-            // returning 503 errors occasionally. 
+            // returning 503 errors occasionally. = took a while for them up update this, but
+            // the problem was their API, even though the status tracker said it was working >_<
         }
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
