@@ -52,7 +52,7 @@
 
 // ---------------------//
 // --    Constants   -- //
-static NSString * const kRiotAPIKey = @"e84a851b-a433-46b8-8b3f-8578b78a53e4";
+static NSString * const kRiotAPIKey = @"fb86d5e2-b14f-4de8-aec8-3089280f971b";
 static NSString * const kRiotBaseURL = @"https://<region>.api.pvp.net/api/lol/<region>/<version>";
 
 static NSString * const kRegionPlaceholder = @"<region>";
@@ -156,6 +156,37 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
     
     self.httpSessionManager = [[AFHTTPSessionManager alloc]
                                initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    [self.httpSessionManager setDataTaskWillCacheResponseBlock:^NSCachedURLResponse * (NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse) {
+        NSLog(@"Sending back a cached response");
+        
+        // Check to see if I can send a request header that specifies the response cache policy... if that's even possible
+        // Reset data on simulator and then compare dataTask.response and proposedResponse.response again. they were exactly the same
+        //
+        
+        // continue on: http://blackpixel.com/blog/2012/05/caching-and-nsurlconnection.html (what to do when there is no cache policy or expiration header)
+        // also: http://petersteinberger.com/blog/2012/nsurlcache-uses-a-disk-cache-as-of-ios5/ (using disk v. memory cache)
+        // similar pod: https://github.com/troystump/LoLAPI
+        // relies on RestKit: https://github.com/RestKit/RestKit (which is built on AFNetworking)
+        //      it has built-in integration with Core Data via RKObjectMapping
+        
+        // For reference:
+        // NSHipster: http://nshipster.com/nsurlcache/
+        // Apple URL Loading Reference: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/Concepts/CachePolicies.html#//apple_ref/doc/uid/20001843-BAJEAIEE
+        // Vary header: http://www.fastly.com/blog/best-practices-for-using-the-vary-header/
+        // Wiki on caching headers: http://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Effects_of_selected_fields
+        
+        
+        
+        NSCachedURLResponse * responseCached = [[NSCachedURLResponse alloc] initWithResponse:dataTask.response
+                                                                                        data:proposedResponse.data
+                                                                                    userInfo:nil
+                                                                               storagePolicy:NSURLCacheStorageAllowed];
+        return responseCached;
+    }];
+    
+    //AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
+    // Try to add HTTP header fields that specific the cache policy, then see if summonerTask.originalRequest.allHTTPHeaderFields is updated
     
     NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[url absoluteString]
                                                              parameters:@{ @"api_key" : kRiotAPIKey }
