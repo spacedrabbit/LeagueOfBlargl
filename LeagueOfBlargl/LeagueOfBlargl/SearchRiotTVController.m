@@ -91,7 +91,7 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     [self.navigationItem setTitle:@"League of Blargl"];
     
     RiotAPIManager * myManager = [RiotAPIManager sharedManager];
-    NSString * queryString = @"existinabsurdity,mister strickland,mr dale gribble";
+    NSString * queryString = @"tubzthegreat";
     
     self.searchResults = [[NSMutableArray alloc] init];
 

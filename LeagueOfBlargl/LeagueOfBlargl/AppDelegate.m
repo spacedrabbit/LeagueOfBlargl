@@ -64,8 +64,8 @@
     [[UINavigationBar appearance] setTintColor:self.riotMediumRareBlue];
     
     
-    NSURLCache * URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024 diskCapacity:20 * 1024 * 1024 diskPath:nil];
-    [NSURLCache setSharedURLCache:URLCache];
+//    NSURLCache * URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024 diskCapacity:20 * 1024 * 1024 diskPath:nil];
+//    [NSURLCache setSharedURLCache:URLCache];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setRootViewController:navController];

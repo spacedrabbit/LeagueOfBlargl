@@ -175,18 +175,30 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
         // Apple URL Loading Reference: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/Concepts/CachePolicies.html#//apple_ref/doc/uid/20001843-BAJEAIEE
         // Vary header: http://www.fastly.com/blog/best-practices-for-using-the-vary-header/
         // Wiki on caching headers: http://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Effects_of_selected_fields
-        
-        
-        
-        NSCachedURLResponse * responseCached = [[NSCachedURLResponse alloc] initWithResponse:dataTask.response
-                                                                                        data:proposedResponse.data
-                                                                                    userInfo:nil
-                                                                               storagePolicy:NSURLCacheStorageAllowed];
+        NSCachedURLResponse * responseCached;
+        NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)[proposedResponse response];
+        if (dataTask.originalRequest.cachePolicy == NSURLRequestUseProtocolCachePolicy) {
+            NSDictionary *headers = httpResponse.allHeaderFields;
+            NSString * cacheControl = [headers valueForKey:@"Cache-Control"];
+            NSString * expires = [headers valueForKey:@"Expires"];
+            if (cacheControl == nil && expires == nil) {
+                NSLog(@"Server does not provide expiration information and use are using NSURLRequestUseProtocolCachePolicy");
+                responseCached = [[NSCachedURLResponse alloc] initWithResponse:dataTask.response
+                                                                          data:proposedResponse.data
+                                                                      userInfo:@{ @"response" : dataTask.response, @"proposed" : proposedResponse.data }
+                                                                 storagePolicy:NSURLCacheStorageAllowed];
+                
+            }
+        }
         return responseCached;
     }];
     
     //AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
     // Try to add HTTP header fields that specific the cache policy, then see if summonerTask.originalRequest.allHTTPHeaderFields is updated
+    AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
+    [riotAPIRequestSerializer setValue:@"public,max-age=3600" forHTTPHeaderField:@"Cache-Control"];
+    [riotAPIRequestSerializer setValue:@"Tue, 30 Dec 2014 05:58:34 GMT" forHTTPHeaderField:@"If-Modified-Since"];
+    self.httpSessionManager.requestSerializer = riotAPIRequestSerializer;
     
     NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[url absoluteString]
                                                              parameters:@{ @"api_key" : kRiotAPIKey }
