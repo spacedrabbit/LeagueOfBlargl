@@ -7,10 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface RiotDataManager : NSObject
+@interface RiotDataManager : NSObject <UITableViewDataSource>
+
+@property (strong, nonatomic) UITableView * managedTableView;
 
 +(instancetype) sharedManager;
--(void) createSummonersFromRawJSON:(NSDictionary *)jsonData;
+
+-(void)createSummonersFromRawJSON:(NSDictionary *)jsonData;
+
 
 @end

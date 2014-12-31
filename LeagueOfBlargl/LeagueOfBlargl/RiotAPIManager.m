@@ -61,6 +61,7 @@ static NSString * const kVersionPlaceholder = @"<version>";
   // == STATIC DATA == //
 static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api/lol/static-data/<region>/<version>";
 
+typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse);
 
 // ---------------------//
 // --    Interface   -- //
@@ -73,6 +74,8 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
 @property (strong, nonatomic) AFHTTPSessionManager * httpSessionManager;
 
 @property (strong, nonatomic) RegionAPIVersionInfo * versionInfo;
+
+@property (copy) CacheResponse DelegateCacheResponseBlock;
 
 @end
 
@@ -156,48 +159,9 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
     
     self.httpSessionManager = [[AFHTTPSessionManager alloc]
                                initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    [self.httpSessionManager setDataTaskWillCacheResponseBlock:^NSCachedURLResponse * (NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse) {
-        NSLog(@"Sending back a cached response");
-        
-        // Check to see if I can send a request header that specifies the response cache policy... if that's even possible
-        // Reset data on simulator and then compare dataTask.response and proposedResponse.response again. they were exactly the same
-        //
-        
-        // continue on: http://blackpixel.com/blog/2012/05/caching-and-nsurlconnection.html (what to do when there is no cache policy or expiration header)
-        // also: http://petersteinberger.com/blog/2012/nsurlcache-uses-a-disk-cache-as-of-ios5/ (using disk v. memory cache)
-        // similar pod: https://github.com/troystump/LoLAPI
-        // relies on RestKit: https://github.com/RestKit/RestKit (which is built on AFNetworking)
-        //      it has built-in integration with Core Data via RKObjectMapping
-        
-        // For reference:
-        // NSHipster: http://nshipster.com/nsurlcache/
-        // Apple URL Loading Reference: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/Concepts/CachePolicies.html#//apple_ref/doc/uid/20001843-BAJEAIEE
-        // Vary header: http://www.fastly.com/blog/best-practices-for-using-the-vary-header/
-        // Wiki on caching headers: http://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Effects_of_selected_fields
-        NSCachedURLResponse * responseCached;
-        NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)[proposedResponse response];
-        if (dataTask.originalRequest.cachePolicy == NSURLRequestUseProtocolCachePolicy) {
-            NSDictionary *headers = httpResponse.allHeaderFields;
-            NSString * cacheControl = [headers valueForKey:@"Cache-Control"];
-            NSString * expires = [headers valueForKey:@"Expires"];
-            if (cacheControl == nil && expires == nil) {
-                NSLog(@"Server does not provide expiration information and use are using NSURLRequestUseProtocolCachePolicy");
-                responseCached = [[NSCachedURLResponse alloc] initWithResponse:dataTask.response
-                                                                          data:proposedResponse.data
-                                                                      userInfo:@{ @"response" : dataTask.response, @"proposed" : proposedResponse.data }
-                                                                 storagePolicy:NSURLCacheStorageAllowed];
-                
-            }
-        }
-        return responseCached;
-    }];
-    
-    //AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
-    // Try to add HTTP header fields that specific the cache policy, then see if summonerTask.originalRequest.allHTTPHeaderFields is updated
-    AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
-    self.httpSessionManager.requestSerializer = riotAPIRequestSerializer;
-    
+
+    [self.httpSessionManager setDataTaskWillCacheResponseBlock:self.DelegateCacheResponseBlock];
+
     NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[url absoluteString]
                                                              parameters:@{ @"api_key" : kRiotAPIKey }
                                                                 success:^(NSURLSessionDataTask *task, id responseObject)
@@ -205,11 +169,26 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
                                                 // typecasts so that I can check the status code
                                                 // otherwise task.response return type is NSURLResponse
                                                 NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)task.response;
-                                                if (httpResponse.statusCode == 200)
+                                                if (httpResponse.statusCode == 200) //good
                                                 {
                                                     success(responseObject);
+                                                }
+                                                else if(httpResponse.statusCode == 429) //rate limit exceeded
+                                                {
+                                                    NSLog(@"Too many requests have been made using this key. Please wait and try again later");
+                                                    error(responseObject);
+                                                }
+                                                else if(httpResponse.statusCode == 503) //server busy/unavailable
+                                                {
+                                                    NSLog(@"Server either too busy or unavailable. Try again later");
+                                                    error(responseObject);
+                                                }
+                                                else if (httpResponse.statusCode == 304) //response not modified
+                                                {
+                                                    NSLog(@"No change since last refresh");
+                                                    success(responseObject);
                                                 }else{
-                                                    NSLog(@"Non 200 Status Code Encountered: %ld", (long)httpResponse.statusCode);
+                                                    NSLog(@"Unknown error occurred, likely network issues: %ld", (long)httpResponse.statusCode);
                                                     error(responseObject);
                                                 }
                                             }
@@ -220,6 +199,52 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
     [summonerTask resume];
     
 }
+
+
+// -- BLOCK PROPERTY SETTERS -- //
+
+#pragma mark - Block Property Setter/Getters
+// I'm not entirely sure this is best practices when it comes to modern iOS architecture..
+// I do make the block property (copy) as indicated... but something about this feels wrong
+// I mean, the returned typedef has the same block signature as the block property would indicate
+// But, the setter seems off.. even though everything *seems* to be working the same
+-(void)setDelegateCacheResponseBlock:(CacheResponse)delegateCacheResponse
+{
+    self.DelegateCacheResponseBlock = delegateCacheResponse;
+}
+-(CacheResponse)DelegateCacheResponseBlock{
+    
+    CacheResponse internaleCacheBlock;
+    return internaleCacheBlock = ^(NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse){
+            
+            NSCachedURLResponse * responseCached;
+            NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)[proposedResponse response];
+            
+            //checks to see if NSURLRequestUseProtocolCachePolicy is in place
+            //the protocol determines if a request should be cached based on it's headers
+            if (dataTask.originalRequest.cachePolicy == NSURLRequestUseProtocolCachePolicy)
+            {
+                NSDictionary *headers = httpResponse.allHeaderFields;
+                NSString * cacheControl = [headers valueForKey:@"Cache-Control"];
+                NSString * expires = [headers valueForKey:@"Expires"];
+                
+                //if the headers for this protocol don't exist, then we will take care of the caching manually
+                //outlined in blog post on NSURLCache
+                if (cacheControl == nil && expires == nil)
+                {
+                    NSLog(@"Server does not provide expiration information and use are using NSURLRequestUseProtocolCachePolicy");
+                    responseCached = [[NSCachedURLResponse alloc] initWithResponse:dataTask.response
+                                                                              data:proposedResponse.data
+                                                                          userInfo:@{ @"response" : dataTask.response, @"proposed" : proposedResponse.data }
+                                                                     storagePolicy:NSURLCacheStorageAllowed];
+                    
+                }
+            }
+            
+            return responseCached;
+        };
+}
+
 
 #pragma mark - URL CREATION
 // -- Creates the full URL String -- //

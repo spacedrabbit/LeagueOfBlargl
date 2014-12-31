@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 com.SRLabs. All rights reserved.
 //
 
+#import "RiotDataManager.h"
 #import "SearchRiotTVController.h"
 #import "RiotAPIManager.h"
 #import "RiotDataManager.h"
@@ -129,7 +130,7 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 /**********************************************************************************
  *
  *      TABLEVIEW DELEGATE METHODS
- *
+ *      Side note: move this into DataManager since the data is managed there
  ***********************************************************************************/
 #pragma mark - TABLEVIEW DELEGATE METHODS
 
@@ -171,7 +172,7 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    UIFont *hevNeu = [UIFont fontWithName:@"HelveticaNeue-BlackCondensed" size:14.0];
+    //UIFont *hevNeu = [UIFont fontWithName:@"HelveticaNeue-BlackCondensed" size:14.0];
     
     UIView * headerView = [[UIView alloc] init];
     [headerView sizeToFit];
