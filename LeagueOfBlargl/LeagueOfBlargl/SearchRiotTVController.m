@@ -8,6 +8,7 @@
 
 #import "SearchRiotTVController.h"
 #import "RiotAPIManager.h"
+#import "RiotDataManager.h"
 #import "Summoners.h"
 
 
@@ -26,10 +27,32 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 
 @property (strong, nonatomic) UITableViewCell * searchResultsCells;
 
+@property (strong, nonatomic) RiotAPIManager * sharedAPIManager;
+@property (strong, nonatomic) RiotDataManager * sharedDataManager;
+
 
 @end
 
 @implementation SearchRiotTVController
+
+-(RiotDataManager *)sharedDataManager{
+    if (!_sharedDataManager) {
+        _sharedDataManager = [RiotDataManager sharedManager];
+    }
+    return _sharedDataManager;
+}
+-(RiotAPIManager *)sharedAPIManager{
+    if (!_sharedAPIManager) {
+        _sharedAPIManager = [RiotAPIManager sharedManager];
+    }
+    return _sharedAPIManager;
+}
+-(NSMutableArray *)searchResults{
+    if (!_searchResults) {
+        _searchResults = [[NSMutableArray alloc] init];
+    }
+    return _searchResults;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,6 +61,8 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     UIColor * riotMediumBlue = [UIColor colorWithRed:0.610 green:0.735 blue:0.854 alpha:1.000];
     [self.tableView setBackgroundColor:riotMediumWellBlue];
     [self.tableView setSeparatorColor:[UIColor clearColor]];
+    
+    [self.navigationItem setTitle:@"League of Blargl"];
     
     // -- PRESENTATION CONTEXTS -- //
     // needed so that a presenting view will restrict the bounds of a
@@ -80,48 +105,14 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     // So from the sounds of it, the searchBar knows it's own size.. otherwise the headerview default
     // size determines it. not sure though.
     [self.searchBar sizeToFit];
-    [self.searchBar setBarStyle:UIBarStyleBlack];
+    [self.searchBar setBarStyle:UIBarStyleBlackTranslucent];
     
     // IT EVEN HANDLES THE SHOW/HIDE FOR YOU!!!
     // Cmon.. easy mode Apple. Make something challenging.
-    [self.searchBar setScopeButtonTitles:@[@"SUMR",@"CHMP",@"ITM",@"RUNE"]];
+    //[self.searchBar setScopeButtonTitles:@[@"SUMR",@"CHMP",@"ITM",@"RUNE"]];
     
     self.tableView.tableHeaderView = self.searchBar;
-    
-    [self.navigationItem setTitle:@"League of Blargl"];
-    
-    RiotAPIManager * myManager = [RiotAPIManager sharedManager];
-    NSString * queryString = @"tubzthegreat";
-    
-    self.searchResults = [[NSMutableArray alloc] init];
-
-    [myManager searchRiotFor:summonerName
-                   withQuery:queryString
-                   forRegion:northAmerica
-              withCompletion:^(NSDictionary * jsonResults)
-    {
-        //this will eventually be handled by the data manager
-        self.usersFound = [jsonResults allKeys];
-        for (NSString * users in self.usersFound) {
-            NSDictionary * searchResults = jsonResults[users];
-            
-            Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
-                                                                   summonerID:searchResults[@"id"]
-                                                                profileIconID:searchResults[@"profileIconId"]
-                                                                     andLevel:[searchResults[@"summonerLevel"] integerValue]];
-            
-            [self.searchResults addObject:newSummoner];
-            // returning 503 errors occasionally. = took a while for them up update this, but
-            // the problem was their API, even though the status tracker said it was working >_<
-        }
-        
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            
-            [self.tableView reloadData];
-        }];
-
-    }];
-    
+ 
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -132,16 +123,6 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    //CGPoint offset = scrollView.contentOffset;  //changes based on scroll
-    //UIEdgeInsets inset = scrollView.contentInset;//always the same, set at the start
-    
-    //NSLog(@"Offset| X: %f   Y: %f", offset.x, offset.y );
-    //NSLog(@"Inset | Top: %f  Bottom: %f", inset.top, inset.bottom);
-
 }
 
 
@@ -243,34 +224,66 @@ UISearchResultsUpdating, UIScrollViewDelegate>
  ***********************************************************************************/
 #pragma mark - SEARCH BAR DELEGATE
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    NSLog(@"Search bar text did change");
+    //this is where the NSPredicate Search gets its search query
+    //NSLog(@"Search bar text did change");
 }
 -(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    NSLog(@"Search bar should change text in range: %lu, %lu, replacementText: %@", range.length, range.location, text);
+   // NSLog(@"Search bar should change text in range: %lu, %lu, replacementText: %@", range.length, range.location, text);
    return YES;
 }
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    NSLog(@"Search bar should begin editing");
+    //NSLog(@"Search bar should begin editing");
     return YES;
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    NSLog(@"Search bar did begin editing");
+    //NSLog(@"Search bar did begin editing");
 }
 -(BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
-    NSLog(@"Search bar should end editing");
+    //NSLog(@"Search bar should end editing");
     return YES;
 }
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
-    NSLog(@"Search bar did end editing");
+    //NSLog(@"Search bar did end editing");
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"Cancel button clicked");
+    //NSLog(@"Cancel button clicked");
 }
 -(void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"Results list button clicked");
+    //NSLog(@"Results list button clicked");
 }
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"Search button clicked");
+    
+    NSString * searchQuery = searchBar.text;
+    if ([searchQuery length]) {
+        
+        [self.sharedAPIManager searchRiotFor:summonerName
+                       withQuery:searchQuery
+                       forRegion:northAmerica
+                  withCompletion:^(NSDictionary * jsonResults)
+         {
+             
+             [self.sharedDataManager createSummonersFromRawJSON:jsonResults];
+             
+             //this will eventually be handled by the data manager
+             self.usersFound = [jsonResults allKeys];
+             for (NSString * users in self.usersFound) {
+                 NSDictionary * searchResults = jsonResults[users];
+                 
+                 Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
+                                                                        summonerID:searchResults[@"id"]
+                                                                     profileIconID:searchResults[@"profileIconId"]
+                                                                          andLevel:[searchResults[@"summonerLevel"] integerValue]];
+                 
+                 [self.searchResults addObject:newSummoner];
+             }
+             
+             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                 [self.tableView reloadData];
+             }];
+             
+         }];
+    }
+    
 }
 
 /**********************************************************************************

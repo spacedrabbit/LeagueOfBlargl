@@ -139,7 +139,7 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
          NSLog(@"Issue logged in [%@ %@]", NSStringFromClass([RiotAPIManager class]), NSStringFromSelector(@selector(searchRiotFor:withQuery:forRegion:withCompletion:)) );
          completion(nil);
      }];
-
+    
 }
 
 /**********************************************************************************
@@ -196,8 +196,6 @@ static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api
     //AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
     // Try to add HTTP header fields that specific the cache policy, then see if summonerTask.originalRequest.allHTTPHeaderFields is updated
     AFHTTPRequestSerializer * riotAPIRequestSerializer = [AFHTTPRequestSerializer serializer];
-    [riotAPIRequestSerializer setValue:@"public,max-age=3600" forHTTPHeaderField:@"Cache-Control"];
-    [riotAPIRequestSerializer setValue:@"Tue, 30 Dec 2014 05:58:34 GMT" forHTTPHeaderField:@"If-Modified-Since"];
     self.httpSessionManager.requestSerializer = riotAPIRequestSerializer;
     
     NSURLSessionDataTask * summonerTask =  [self.httpSessionManager GET:[url absoluteString]
