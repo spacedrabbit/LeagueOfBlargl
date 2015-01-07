@@ -40,18 +40,25 @@
 
 -(void)createSummonersFromRawJSON:(NSDictionary *)jsonData{
     
-    NSArray * usersFound = [jsonData allKeys];
-    for (NSString * users in usersFound) {
-        NSDictionary * searchResults = jsonData[users];
-        
+    NSArray * summonersNames = [jsonData allKeys]; // keys for this query are the summoner's names
+    
+    for (NSString * summoner in summonersNames)
+    {
+        NSDictionary * searchResults = jsonData[summoner];
         Summoners * newSummoner = [[Summoners alloc] initWithSummonerName:searchResults[@"name"]
                                                                summonerID:searchResults[@"id"]
                                                             profileIconID:searchResults[@"profileIconId"]
                                                                  andLevel:[searchResults[@"summonerLevel"] integerValue]];
         
+        //needs a check here to see if they already exist
         [self.allSummoners addObject:newSummoner];
+        
+        if ([self.allSummoners count] > 0) {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [self.managedTableView reloadData];
+            }];
+        }
     }
-    
 }
 
 
@@ -61,12 +68,19 @@
  *      
  ***********************************************************************************/
 #pragma mark - TABLEVIEW DELEGATE METHODS
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.allSummoners ? [self.allSummoners count] : 0;
 }
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
 
+    NSString * headerString = (section == 0) ? @"Summoners" : @"";
+
+    return headerString;
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"searchCell"];
@@ -88,6 +102,13 @@
     
     return cell;
 
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
+    
+    
 }
 
 @end

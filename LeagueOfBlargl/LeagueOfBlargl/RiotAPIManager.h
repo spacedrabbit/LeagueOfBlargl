@@ -51,6 +51,7 @@ typedef NSString* SummonerName, SummonerID, StaticData;
 // -- helpers -- //
 -(void) changeRegionTo:(LoLRegions)region;
 -(LoLRegions) currentRegion;
+-(NSArray *) priorSearches;
 
 
 @end

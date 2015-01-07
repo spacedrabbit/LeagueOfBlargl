@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface RiotDataManager : NSObject <UITableViewDataSource>
+@interface RiotDataManager : NSObject <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView * managedTableView;
+@property (strong, nonatomic) NSMutableArray * searchHistory;
 
 +(instancetype) sharedManager;
 

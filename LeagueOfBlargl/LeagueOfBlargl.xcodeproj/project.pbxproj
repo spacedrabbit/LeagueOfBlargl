@@ -16,6 +16,8 @@
 		B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260381A47900F00B038AB /* RiotAPIManager.m */; };
 		B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B162603D1A47D71400B038AB /* CoreGraphics.framework */; };
 		B16260411A47E93600B038AB /* Summoners.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260401A47E93600B038AB /* Summoners.m */; };
+		B18877161A5DE35700CF4063 /* SavedSearchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = B18877151A5DE35700CF4063 /* SavedSearchQuery.m */; };
+		B18877191A5DEDFB00CF4063 /* SummonerProfile_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */; };
 		B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B1EF81A48FB82000D29AD /* RiotDataManager.m */; };
 		B18B1EFC1A48FC0F000D29AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18B1EFB1A48FC0F000D29AD /* UIKit.framework */; };
 		BB15828D1B7257A2284D2028 /* libPods-LeagueOfBlargl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B888FB02DBEC1CF73BA94E0D /* libPods-LeagueOfBlargl.a */; };
@@ -51,6 +53,10 @@
 		B162603D1A47D71400B038AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B162603F1A47E93600B038AB /* Summoners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summoners.h; sourceTree = "<group>"; };
 		B16260401A47E93600B038AB /* Summoners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summoners.m; sourceTree = "<group>"; };
+		B18877141A5DE35700CF4063 /* SavedSearchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedSearchQuery.h; sourceTree = "<group>"; };
+		B18877151A5DE35700CF4063 /* SavedSearchQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedSearchQuery.m; sourceTree = "<group>"; };
+		B18877171A5DEDFB00CF4063 /* SummonerProfile_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummonerProfile_VC.h; sourceTree = "<group>"; };
+		B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummonerProfile_VC.m; sourceTree = "<group>"; };
 		B18B1EF71A48FB82000D29AD /* RiotDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDataManager.h; sourceTree = "<group>"; };
 		B18B1EF81A48FB82000D29AD /* RiotDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDataManager.m; sourceTree = "<group>"; };
 		B18B1EFB1A48FC0F000D29AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -101,6 +107,8 @@
 		B162600D1A478DF500B038AB /* LeagueOfBlargl */ = {
 			isa = PBXGroup;
 			children = (
+				B18877171A5DEDFB00CF4063 /* SummonerProfile_VC.h */,
+				B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */,
 				B18B1EFA1A48FB8A000D29AD /* Data Manager */,
 				B162603A1A47901400B038AB /* API Manager */,
 				B162603B1A47902A00B038AB /* App Delegate */,
@@ -178,6 +186,8 @@
 		B18B1EFA1A48FB8A000D29AD /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
+				B18877141A5DE35700CF4063 /* SavedSearchQuery.h */,
+				B18877151A5DE35700CF4063 /* SavedSearchQuery.m */,
 				B18B1EF71A48FB82000D29AD /* RiotDataManager.h */,
 				B18B1EF81A48FB82000D29AD /* RiotDataManager.m */,
 			);
@@ -341,7 +351,9 @@
 				B16260111A478DF500B038AB /* main.m in Sources */,
 				B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */,
 				B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */,
+				B18877161A5DE35700CF4063 /* SavedSearchQuery.m in Sources */,
 				B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */,
+				B18877191A5DEDFB00CF4063 /* SummonerProfile_VC.m in Sources */,
 				B16260411A47E93600B038AB /* Summoners.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

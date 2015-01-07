@@ -8,7 +8,10 @@
 
 #import "RiotAPIManager.h"
 #import "RiotDataManager.h"
+#import "SavedSearchQuery.h"
 #import <AFNetworking/AFNetworking.h>
+
+// -- Regin API Info Calls -- //
 
 @interface RegionAPIVersionInfo : NSObject
 
@@ -66,7 +69,9 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 // ---------------------//
 // --    Interface   -- //
 @interface RiotAPIManager ()
+
 @property (nonatomic) NSInteger selectedRegion;
+@property (strong, nonatomic) NSMutableArray * savedSearches;
 
 @property (strong, nonatomic) NSDictionary * searchTypeKey;
 @property (strong, nonatomic) NSDictionary * regionKey;
@@ -107,7 +112,12 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     }
     return self;
 }
-
+-(NSMutableArray *)savedSearches{
+    if (!_savedSearches) {
+        _savedSearches = [[NSMutableArray alloc] init];
+    }
+    return _savedSearches;
+}
 
 /**********************************************************************************
  *
@@ -130,6 +140,10 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     NSString * utf8Query = [requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL * requestURL = [NSURL URLWithString:utf8Query];
 
+    [self.savedSearches addObject:[SavedSearchQuery createSavedSearch:query
+                                                              fullURL:requestURL
+                                                          ofQueryType:@(type)]];
+    
     [self beginRequestWithURL:requestURL
                   withSuccess:^(NSDictionary * jsonData)
      {
@@ -187,7 +201,11 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
                                                 {
                                                     NSLog(@"No change since last refresh");
                                                     success(responseObject);
-                                                }else{
+                                                }else if (httpResponse.statusCode == 404){
+                                                    NSLog(@"No summoner data found for request");
+                                                    error(responseObject);
+                                                }
+                                                else{
                                                     NSLog(@"Unknown error occurred, likely network issues: %ld", (long)httpResponse.statusCode);
                                                     error(responseObject);
                                                 }
@@ -331,6 +349,9 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
  ***********************************************************************************/
 #pragma mark - HELPERS
 // -- helpers -- //
+-(NSArray *) priorSearches{
+    return self.savedSearches;
+}
 -(void)changeRegionTo:(LoLRegions)region{
     self.selectedRegion = region;
 }

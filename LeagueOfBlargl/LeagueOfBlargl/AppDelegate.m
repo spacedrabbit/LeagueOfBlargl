@@ -53,7 +53,7 @@
     
     
     
-    [[UINavigationBar appearance] setBarTintColor:self.riotDeepBlue];
+    [[UINavigationBar appearance] setBarTintColor:self.riotRareBlue];
     [[UINavigationBar appearance] setTitleTextAttributes:@{
                                                             NSFontAttributeName : self.riotiOSFont,
                                                             NSForegroundColorAttributeName : [UIColor whiteColor] ,
