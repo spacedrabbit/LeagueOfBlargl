@@ -28,7 +28,7 @@ typedef NSString* SummonerName, SummonerID, StaticData;
 // -- TYPEDEF REFERENCE VALUES -- //
 
 
-
+@class Summoners;
 @interface RiotAPIManager : NSObject
 
 +(instancetype) sharedManager;
@@ -53,5 +53,7 @@ typedef NSString* SummonerName, SummonerID, StaticData;
 -(LoLRegions) currentRegion;
 -(NSArray *) priorSearches;
 
+// -- Static API Calls - //
+-(void) makeProfileIconCallFor:(Summoners *)summoner completion:(void(^)(BOOL))complete;
 
 @end

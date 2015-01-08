@@ -6,10 +6,13 @@
 //  Copyright (c) 2014 com.SRLabs. All rights reserved.
 //
 
+#import "Summoners.h"
 #import "RiotAPIManager.h"
 #import "RiotDataManager.h"
 #import "SavedSearchQuery.h"
 #import <AFNetworking/AFNetworking.h>
+
+#import "RiotStaticRequest.h"
 
 // -- Regin API Info Calls -- //
 
@@ -63,8 +66,7 @@ static NSString * const kVersionPlaceholder = @"<version>";
 
   // == STATIC DATA == //
 static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api/lol/static-data/<region>/<version>";
-static NSString * const kProfileIconsURL = @"http://ddragon.leagueoflegends.com/cdn/<version>/img/profileicon/";
-static NSString * const kCurrentDragonVersion = @"4.20.1";
+
 
 typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse);
 
@@ -87,10 +89,18 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 @end
 
 
-
 // ---------------------//
 // -- Implementation -- //
 @implementation RiotAPIManager
+
+@synthesize DelegateCacheResponseBlock = _DelegateCacheResponseBlock;
+
+
+/**********************************************************************************
+ *
+ *              Inits and Singletons
+ *
+ ***********************************************************************************/
 
 #pragma mark - INITIALIZERS & SINGLETONS
 +(instancetype) sharedManager
@@ -119,6 +129,24 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
         _savedSearches = [[NSMutableArray alloc] init];
     }
     return _savedSearches;
+}
+
+/**********************************************************************************
+ *
+ *             Specific API Calls
+ *
+ ***********************************************************************************/
+-(void)makeProfileIconCallFor:(Summoners *)summoner completion:(void (^)(BOOL))complete{
+    
+    RiotStaticRequest * iconRequest = [[RiotStaticRequest alloc] init];
+    [iconRequest retrieveStaticDataFor:summoner completion:^(BOOL success, UIImage *icon)
+    {
+        if (success) {
+            summoner.profileImage = icon;
+            complete(YES);
+        }
+    }];
+    
 }
 
 /**********************************************************************************
@@ -161,21 +189,7 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     
 }
 
--(void) retrieveStaticDataFor:(Summoners *)summoner{
-    
-    NSString * urlString = [kProfileIconsURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
-                                                                       withString:kCurrentDragonVersion];
-    [self beginRequestWithURL:[NSURL URLWithString:urlString]
-                  withSuccess:^(NSDictionary * jsonData)
-    {
-        
-    }
-                      orError:^(NSDictionary * jsonData)
-    {
-        
-    }];
-    
-}
+
 
 /**********************************************************************************
  *
@@ -238,15 +252,22 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 
 
 // -- BLOCK PROPERTY SETTERS -- //
+/**********************************************************************************
+ *
+ *              BLOCK SETTERS
+ *
+ ***********************************************************************************/
 
 #pragma mark - Block Property Setter/Getters
 // I'm not entirely sure this is best practices when it comes to modern iOS architecture..
 // I do make the block property (copy) as indicated... but something about this feels wrong
 // I mean, the returned typedef has the same block signature as the block property would indicate
 // But, the setter seems off.. even though everything *seems* to be working the same
+
 -(void)setDelegateCacheResponseBlock:(CacheResponse)delegateCacheResponse
 {
-    self.DelegateCacheResponseBlock = delegateCacheResponse;
+    //come back and double check this, I think i just didn't include the @synth call which is messing with stuff
+    _DelegateCacheResponseBlock = delegateCacheResponse;
 }
 -(CacheResponse)DelegateCacheResponseBlock{
     

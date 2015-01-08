@@ -5,7 +5,7 @@
 //  Created by Louis Tur on 1/7/15.
 //  Copyright (c) 2015 com.SRLabs. All rights reserved.
 //
-
+#import "RiotAPIManager.h"
 #import "SummonerProfile_VC.h"
 #import "Summoners.h"
 
@@ -48,13 +48,19 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    UIImageView * summonerIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 48, 48)];
+    UIImageView * summonerIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 100, 48, 48)];
+    summonerIcon.image = self.selectedSummoner.profileImage;
     [self.view addSubview:summonerIcon];
-    
-    
-    
-    
+
     // Do any additional setup after loading the view.
+}
+
+-(void) imageCall:(id)sender{
+    
+    //[[RiotAPIManager sharedManager] makeProfileIconCallFor:self.selectedSummoner completion:^(BOOL success){
+        
+    //}];
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -7,6 +7,7 @@
 //
 
 #import "SummonerProfile_VC.h"
+#import "RiotAPIManager.h"
 #import "RiotDataManager.h"
 #import "Summoners.h"
 
@@ -54,11 +55,17 @@
         //needs a check here to see if they already exist
         [self.allSummoners addObject:newSummoner];
         
-        if ([self.allSummoners count] > 0) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self.managedTableView reloadData];
-            }];
-        }
+        // this should really be the same request as the summoner JSON, obviously.
+        // so much refactoring to do...
+        [[RiotAPIManager sharedManager] makeProfileIconCallFor:newSummoner completion:^(BOOL success){
+            
+            if (success) {
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self.managedTableView reloadData];
+                }];
+            }
+        }];
+        
     }
 }
 
@@ -96,6 +103,9 @@
         cell.textLabel.text = currentSummoner.summonerName;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"Level: %li\t Icon:%@",
                                      currentSummoner.level, currentSummoner.iconID];
+        if (currentSummoner.profileImage) {
+            cell.imageView.image = currentSummoner.profileImage;
+        }
     }else
     {
         cell.textLabel.text = @"No search results";
