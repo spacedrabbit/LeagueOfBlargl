@@ -63,6 +63,8 @@ static NSString * const kVersionPlaceholder = @"<version>";
 
   // == STATIC DATA == //
 static NSString * const kDragonVersionQuery = @"https://<region>.api.pvp.net/api/lol/static-data/<region>/<version>";
+static NSString * const kProfileIconsURL = @"http://ddragon.leagueoflegends.com/cdn/<version>/img/profileicon/";
+static NSString * const kCurrentDragonVersion = @"4.20.1";
 
 typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessionDataTask *dataTask, NSCachedURLResponse *proposedResponse);
 

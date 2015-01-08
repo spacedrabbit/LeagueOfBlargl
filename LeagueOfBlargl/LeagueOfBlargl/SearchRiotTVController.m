@@ -114,7 +114,6 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     //[self.searchBar setScopeButtonTitles:@[@"SUMR",@"CHMP",@"ITM",@"RUNE"]];
     
     self.tableView.tableHeaderView = self.searchBar;
-    [self.tableView setDelegate:self.sharedDataManager];
     [self.tableView setDataSource:self.sharedDataManager];
     self.sharedDataManager.managedTableView = self.tableView;
  
@@ -133,10 +132,10 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 
 /**********************************************************************************
  *
- *      TABLEVIEW DELEGATE METHODS
+ *      TABLEVIEW METHODS
  *      Side note: move this into DataManager since the data is managed there
  ***********************************************************************************/
-#pragma mark - TABLEVIEW DELEGATE METHODS
+#pragma mark - TABLEVIEW DATA METHODS (Search Table)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -164,6 +163,15 @@ UISearchResultsUpdating, UIScrollViewDelegate>
 }
 -(BOOL)prefersStatusBarHidden{
     return NO;
+}
+
+#pragma mark - TABLEVIEW DELEGATE METHODS
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    Summoners * selectedSummoner = self.sharedDataManager.allSummoners[indexPath.row];
+    SummonerProfile_VC * dstvc = [[SummonerProfile_VC alloc] initWithSummoner:selectedSummoner];
+    
+    [self.navigationController pushViewController:dstvc animated:YES];
 }
 
 

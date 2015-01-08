@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class Summoners;
-@interface SummonerProfile_VC : UIViewController
+@interface SummonerProfile_VC : UIViewController <UITableViewDataSource>
 
 -(instancetype) initWithSummoner:(Summoners *)selectedSummoner;
 -(void) displayDetailsForSummoner:(Summoners *)selectedSummoner;

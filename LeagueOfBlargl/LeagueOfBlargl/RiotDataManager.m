@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 com.SRLabs. All rights reserved.
 //
 
+#import "SummonerProfile_VC.h"
 #import "RiotDataManager.h"
 #import "Summoners.h"
 
 @interface RiotDataManager ()
 
-@property (strong, nonatomic) NSMutableArray * allSummoners;
+
 
 @end
 
@@ -102,13 +103,6 @@
     
     return cell;
 
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
-    
-    
 }
 
 @end

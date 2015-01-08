@@ -9,6 +9,24 @@
 #import "SummonerProfile_VC.h"
 #import "Summoners.h"
 
+
+// -- Summoner Table Header View -- //
+@interface SummonerHeaderView : UIView
+
+@property (strong, nonatomic) UIImageView * profileIcon;
+@property (strong, nonatomic) NSString * summonerName;
+
+@end
+
+@implementation SummonerHeaderView
+
+
+
+@end
+
+
+// -- Rest of the VC -- //
+
 @interface SummonerProfile_VC ()
 
 @property (strong, nonatomic) Summoners * selectedSummoner;
@@ -27,6 +45,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -37,6 +58,20 @@
 
 -(void)displayDetailsForSummoner:(Summoners *)selectedSummoner{
     self.selectedSummoner = selectedSummoner;
+}
+
+#pragma mark - TABLEVIEW DATA SOURCE
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 0;
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return nil;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return nil;
 }
 
 @end

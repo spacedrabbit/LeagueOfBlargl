@@ -107,8 +107,7 @@
 		B162600D1A478DF500B038AB /* LeagueOfBlargl */ = {
 			isa = PBXGroup;
 			children = (
-				B18877171A5DEDFB00CF4063 /* SummonerProfile_VC.h */,
-				B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */,
+				B1C700E01A5E3A2F00008BC1 /* Summoner Profile */,
 				B18B1EFA1A48FB8A000D29AD /* Data Manager */,
 				B162603A1A47901400B038AB /* API Manager */,
 				B162603B1A47902A00B038AB /* App Delegate */,
@@ -192,6 +191,15 @@
 				B18B1EF81A48FB82000D29AD /* RiotDataManager.m */,
 			);
 			name = "Data Manager";
+			sourceTree = "<group>";
+		};
+		B1C700E01A5E3A2F00008BC1 /* Summoner Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B18877171A5DEDFB00CF4063 /* SummonerProfile_VC.h */,
+				B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */,
+			);
+			name = "Summoner Profile";
 			sourceTree = "<group>";
 		};
 		C3DADD28E0C0E4ADBC000353 /* Pods */ = {
