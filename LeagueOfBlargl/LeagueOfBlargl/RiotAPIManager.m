@@ -161,6 +161,22 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     
 }
 
+-(void) retrieveStaticDataFor:(Summoners *)summoner{
+    
+    NSString * urlString = [kProfileIconsURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
+                                                                       withString:kCurrentDragonVersion];
+    [self beginRequestWithURL:[NSURL URLWithString:urlString]
+                  withSuccess:^(NSDictionary * jsonData)
+    {
+        
+    }
+                      orError:^(NSDictionary * jsonData)
+    {
+        
+    }];
+    
+}
+
 /**********************************************************************************
  *
  *              SEARCH AGNOSTIC METHODS

@@ -46,6 +46,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    UIImageView * summonerIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 48, 48)];
+    [self.view addSubview:summonerIcon];
+    
+    
     
     
     // Do any additional setup after loading the view.
@@ -62,16 +68,26 @@
 
 #pragma mark - TABLEVIEW DATA SOURCE
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 0;
+    return 1;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return nil;
+    NSString * headerTitle = (section == 0) ? @"Summoner Data" : @"At a Glance";
+    return headerTitle;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return nil;
+    
+    UITableViewCell * cell;
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    }
+    cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+
+    cell.textLabel.text = self.selectedSummoner.summonerName;
+    
+    return cell;
 }
 
 @end
