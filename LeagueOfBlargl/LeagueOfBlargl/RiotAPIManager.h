@@ -22,6 +22,13 @@ typedef NS_ENUM(NSInteger, LoLSearchType) {
     summonerID,
     static_data
 };
+typedef NS_ENUM(NSInteger, LoLStatusCodes) {
+    lolGood = 200,
+    lolLimitExceeded = 429,
+    lolServerBusy = 503,
+    lolResponseUnmodified = 304,
+    lolRequestNotFound = 404
+};
 
 typedef NSString* SummonerName, SummonerID, StaticData;
 
@@ -33,12 +40,14 @@ typedef NSString* SummonerName, SummonerID, StaticData;
 
 +(instancetype) sharedManager;
 
+-(void) makeRiotAPIRequest:(NSURL *)requestURL
+                completion:(void(^)(BOOL, NSDictionary *))complete;
 
 -(void) beginRequestWithURL:(NSURL *)urlString
                 withSuccess:(void(^)(NSDictionary *))success
                     orError:(void(^)(NSDictionary *))error;
 
--(NSString *) createURLStringForRegion:(LoLRegions)region
+-(NSURL *) createURLStringForRegion:(LoLRegions)region
                             apiVersion:(NSString *)version
                              queryType:(LoLSearchType)type
                               andQuery:(NSString *)query;

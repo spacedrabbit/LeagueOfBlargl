@@ -10,6 +10,8 @@
 #import "RiotAPIManager.h"
 #import "RiotDataManager.h"
 #import "SavedSearchQuery.h"
+
+#import "SummonerAPIRequests.h"
 #import <AFNetworking/AFNetworking.h>
 
 #import "RiotStaticRequest.h"
@@ -112,7 +114,6 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     });
     return _sharedManager;
  }
-
 -(instancetype)init
 {
     self = [super init];
@@ -129,6 +130,13 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
         _savedSearches = [[NSMutableArray alloc] init];
     }
     return _savedSearches;
+}
+-(AFHTTPSessionManager *)httpSessionManager{
+    if (!_httpSessionManager) {
+        _httpSessionManager = [[AFHTTPSessionManager alloc]
+                            initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    }
+    return _httpSessionManager;
 }
 
 /**********************************************************************************
@@ -149,6 +157,8 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     
 }
 
+
+
 /**********************************************************************************
  *
  *              SEARCH TYPES AND HANDLING
@@ -162,13 +172,10 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
        withCompletion:(void(^)(NSDictionary *))completion
 {
     
-    NSString * requestString = [self createURLStringForRegion:region
+    NSURL * requestURL= [self createURLStringForRegion:region
                                                    apiVersion:@"v1.4"
                                                     queryType:type
                                                      andQuery:query];
-    
-    NSString * utf8Query = [requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL * requestURL = [NSURL URLWithString:utf8Query];
 
     [self.savedSearches addObject:[SavedSearchQuery createSavedSearch:query
                                                               fullURL:requestURL
@@ -197,14 +204,51 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
  *
  ***********************************************************************************/
 // -- SEARCH TYPE AGNOSTIC, WILL JUST GET JSON!! -- //
+-(void)makeRiotAPIRequest:(NSURL *)requestURL completion:(void (^)(BOOL, NSDictionary *))complete{
+    
+    [self.httpSessionManager setDataTaskWillCacheResponseBlock:self.DelegateCacheResponseBlock];
+    
+    NSURLSessionDataTask * riotDataRequest = [self.httpSessionManager GET:requestURL.absoluteString
+                                                               parameters:@{ @"api_key" : kRiotAPIKey }
+                                                                  success:^(NSURLSessionDataTask *task, id responseObject)
+                                              {
+                                                  NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *)task.response;
+                                                  NSInteger statusCode = httpResponse.statusCode;
+                                                  
+                                                  if (statusCode == lolGood) {
+                                                      complete(YES, responseObject);
+                                                  }
+                                                  else if(statusCode == lolLimitExceeded){
+                                                      complete(NO, responseObject);
+                                                  }
+                                                  else if(statusCode == lolServerBusy){
+                                                      complete(NO, responseObject);
+                                                  }
+                                                  else if(statusCode == lolResponseUnmodified){
+                                                      complete(YES, responseObject);
+                                                  }
+                                                  else if(statusCode == lolRequestNotFound){
+                                                      complete(NO, responseObject);
+                                                  }else{
+                                                      complete(NO, @{
+                                                                     @"error": @"unknownResponse",
+                                                                     @"json" : responseObject
+                                                                     } );
+                                                  }
+                                                  
+                                              }
+                                                                  failure:^(NSURLSessionDataTask *task, NSError *error)
+                                              {
+                                                  NSLog(@"Error encountered: %@", error.description);
+                                              }];
+    [riotDataRequest resume];
+}
+
 #pragma mark - API CALLS
 -(void)beginRequestWithURL:(NSURL *)url
                withSuccess:(void (^)(NSDictionary *))success
                    orError:(void (^)(NSDictionary *))error
 {
-    
-    self.httpSessionManager = [[AFHTTPSessionManager alloc]
-                               initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
     [self.httpSessionManager setDataTaskWillCacheResponseBlock:self.DelegateCacheResponseBlock];
 
@@ -305,7 +349,7 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 
 #pragma mark - URL CREATION
 // -- Creates the full URL String -- //
--(NSString *) createURLString:(NSString *)baseURL
+-(NSURL *) createURLString:(NSString *)baseURL
                    WithRegion:(LoLRegions)region
                    apiVersion:(NSString *)version
                     queryType:(LoLSearchType)type
@@ -323,15 +367,19 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     NSString * updatedVersionURL = [updatedRegionURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
                                                                                withString:version];
     
-    return [NSString stringWithFormat:@"%@/%@%@", updatedVersionURL, queryType, query];
+    NSString * formattedURLString = [NSString stringWithFormat:@"%@/%@%@", updatedVersionURL, queryType, query];
+    
+    NSString * utf8QueryString = [formattedURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL * requestURL = [NSURL URLWithString:utf8QueryString];
+    
+    return requestURL;
     
 }
 // -- this is a public facing method as the secret key will be internal
 // -- to this class
--(NSString *)createURLStringForRegion:(LoLRegions)region
-                           apiVersion:(NSString *)version
-                            queryType:(LoLSearchType)type
-                             andQuery:(NSString *)query{
+-(NSURL *)createURLStringForRegion:(LoLRegions)region       apiVersion:(NSString *)version
+                         queryType:(LoLSearchType)type      andQuery:(NSString *)query{
+    
     return [self createURLString:kRiotBaseURL
                       WithRegion:region
                       apiVersion:version
@@ -347,11 +395,11 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
  ***********************************************************************************/
 -(void) getRealmDataForCurrentRegion{
     
-    NSURL *realmQuery = [NSURL URLWithString:[self createURLString:kDragonVersionQuery
+    NSURL *realmQuery = [self createURLString:kDragonVersionQuery
                                                        WithRegion:self.currentRegion
                                                        apiVersion:@"v1.2"
                                                         queryType:static_data
-                                                         andQuery:@""]];
+                                                         andQuery:@""];
     
     // does this cause a retain cycle? or does __block fix that?
     /* 

@@ -16,6 +16,7 @@
 		B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260381A47900F00B038AB /* RiotAPIManager.m */; };
 		B162603E1A47D71400B038AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B162603D1A47D71400B038AB /* CoreGraphics.framework */; };
 		B16260411A47E93600B038AB /* Summoners.m in Sources */ = {isa = PBXBuildFile; fileRef = B16260401A47E93600B038AB /* Summoners.m */; };
+		B17F3DD61A609222001DBA26 /* SummonerAPIRequests.m in Sources */ = {isa = PBXBuildFile; fileRef = B17F3DD51A609222001DBA26 /* SummonerAPIRequests.m */; };
 		B18877161A5DE35700CF4063 /* SavedSearchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = B18877151A5DE35700CF4063 /* SavedSearchQuery.m */; };
 		B18877191A5DEDFB00CF4063 /* SummonerProfile_VC.m in Sources */ = {isa = PBXBuildFile; fileRef = B18877181A5DEDFB00CF4063 /* SummonerProfile_VC.m */; };
 		B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B1EF81A48FB82000D29AD /* RiotDataManager.m */; };
@@ -54,6 +55,8 @@
 		B162603D1A47D71400B038AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B162603F1A47E93600B038AB /* Summoners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summoners.h; sourceTree = "<group>"; };
 		B16260401A47E93600B038AB /* Summoners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summoners.m; sourceTree = "<group>"; };
+		B17F3DD41A609222001DBA26 /* SummonerAPIRequests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummonerAPIRequests.h; sourceTree = "<group>"; };
+		B17F3DD51A609222001DBA26 /* SummonerAPIRequests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SummonerAPIRequests.m; sourceTree = "<group>"; };
 		B18877141A5DE35700CF4063 /* SavedSearchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedSearchQuery.h; sourceTree = "<group>"; };
 		B18877151A5DE35700CF4063 /* SavedSearchQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedSearchQuery.m; sourceTree = "<group>"; };
 		B18877171A5DEDFB00CF4063 /* SummonerProfile_VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SummonerProfile_VC.h; sourceTree = "<group>"; };
@@ -154,6 +157,7 @@
 				B16260371A47900F00B038AB /* RiotAPIManager.h */,
 				B16260381A47900F00B038AB /* RiotAPIManager.m */,
 				B1EA5C141A5F14C300CE2DC7 /* Static Resources */,
+				B17F3DD71A609228001DBA26 /* SummonerRequests */,
 			);
 			name = "API Manager";
 			sourceTree = "<group>";
@@ -184,6 +188,15 @@
 				B16260401A47E93600B038AB /* Summoners.m */,
 			);
 			name = Summoners;
+			sourceTree = "<group>";
+		};
+		B17F3DD71A609228001DBA26 /* SummonerRequests */ = {
+			isa = PBXGroup;
+			children = (
+				B17F3DD41A609222001DBA26 /* SummonerAPIRequests.h */,
+				B17F3DD51A609222001DBA26 /* SummonerAPIRequests.m */,
+			);
+			name = SummonerRequests;
 			sourceTree = "<group>";
 		};
 		B18B1EFA1A48FB8A000D29AD /* Data Manager */ = {
@@ -374,6 +387,7 @@
 				B16260391A47900F00B038AB /* RiotAPIManager.m in Sources */,
 				B18B1EF91A48FB82000D29AD /* RiotDataManager.m in Sources */,
 				B18877161A5DE35700CF4063 /* SavedSearchQuery.m in Sources */,
+				B17F3DD61A609222001DBA26 /* SummonerAPIRequests.m in Sources */,
 				B16260361A478FF600B038AB /* SearchRiotTVController.m in Sources */,
 				B18877191A5DEDFB00CF4063 /* SummonerProfile_VC.m in Sources */,
 				B16260411A47E93600B038AB /* Summoners.m in Sources */,
