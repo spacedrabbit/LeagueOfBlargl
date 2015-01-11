@@ -10,6 +10,7 @@
 
 @interface SummonerAPIRequests : RiotAPIManager
 
+//update this to include id calls
 -(void) searchForSummonersByName:(NSString *) summonersSearch completion:(void(^)(BOOL, NSArray *))complete;
 
 @end
