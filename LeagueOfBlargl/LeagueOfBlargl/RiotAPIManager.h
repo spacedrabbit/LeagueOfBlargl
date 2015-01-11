@@ -18,9 +18,11 @@ typedef NS_ENUM(NSInteger, LoLRegions) {
     euWest
 };
 typedef NS_ENUM(NSInteger, LoLSearchType) {
-    summonerName = 0,
-    summonerID,
-    static_data
+    LoLSearchTypeSummonerName = 0,
+    LoLSearchTypeSummonerID,
+    LoLSearchTypeStatic_data,
+    LoLSearchTypeSummonerMasteries,
+    LoLSearchTypeSummonerRunes
 };
 typedef NS_ENUM(NSInteger, LoLStatusCodes) {
     lolGood = 200,

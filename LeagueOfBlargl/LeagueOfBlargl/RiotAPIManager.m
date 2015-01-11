@@ -348,26 +348,23 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 
 
 #pragma mark - URL CREATION
-// -- Creates the full URL String -- //
+-(NSURL *) createURLForSummonerID:(NSString *)summonerID toSearch:(LoLSearchType)type{
+    
+    
+    return nil;
+}
+
 -(NSURL *) createURLString:(NSString *)baseURL
                    WithRegion:(LoLRegions)region
                    apiVersion:(NSString *)version
                     queryType:(LoLSearchType)type
                      andQuery:(NSString *)query
 {
-    /* these two calls need refactoring  */
+    //api/lol/{region}/v1.4/summoner/{summonerIds}/masteries
+    NSString * queryType = self.searchTypeKey[@(type)];
+    NSString * updatedBaseURL = [self formatBaseURLForAPIVersion:version inRegion:region];
     
-    // get strings from dictionary
-    NSString * queryType = self.searchTypeKey[[NSNumber numberWithInteger:type]];
-    NSString * regionString = self.regionKey[[NSNumber numberWithInteger:region]];
-    
-    //replace <placeholder> strings with correct info
-    NSString * updatedRegionURL = [baseURL stringByReplacingOccurrencesOfString:kRegionPlaceholder
-                                                                        withString:regionString];
-    NSString * updatedVersionURL = [updatedRegionURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
-                                                                               withString:version];
-    
-    NSString * formattedURLString = [NSString stringWithFormat:@"%@/%@%@", updatedVersionURL, queryType, query];
+    NSString * formattedURLString = [NSString stringWithFormat:@"%@/%@%@", updatedBaseURL, queryType, query];
     
     NSString * utf8QueryString = [formattedURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL * requestURL = [NSURL URLWithString:utf8QueryString];
@@ -377,14 +374,18 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 }
 // -- this is a public facing method as the secret key will be internal
 // -- to this class
--(NSURL *)createURLStringForRegion:(LoLRegions)region       apiVersion:(NSString *)version
-                         queryType:(LoLSearchType)type      andQuery:(NSString *)query{
+-(NSURL *)createURLStringForRegion:(LoLRegions)region apiVersion:(NSString *)version queryType:(LoLSearchType)type andQuery:(NSString *)query{
+    return [self createURLString:kRiotBaseURL WithRegion:region apiVersion:version queryType:type andQuery:query];
+}
+-(NSString *) formatBaseURLForAPIVersion:(NSString *)apiVersion inRegion:(LoLRegions)region{
     
-    return [self createURLString:kRiotBaseURL
-                      WithRegion:region
-                      apiVersion:version
-                       queryType:type
-                        andQuery:query];
+    //replace <placeholder> strings with correct info
+    NSString * regionString = self.regionKey[@(region)];
+    NSString * updatedRegionURL = [kRiotBaseURL stringByReplacingOccurrencesOfString:kRegionPlaceholder
+                                                                     withString:regionString];
+    NSString * updatedVersionURL = [updatedRegionURL stringByReplacingOccurrencesOfString:kVersionPlaceholder
+                                                                               withString:apiVersion];
+    return updatedVersionURL;
 }
 
 
@@ -398,16 +399,21 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
     NSURL *realmQuery = [self createURLString:kDragonVersionQuery
                                                        WithRegion:self.currentRegion
                                                        apiVersion:@"v1.2"
-                                                        queryType:static_data
+                                                        queryType:LoLSearchTypeStatic_data
                                                          andQuery:@""];
     
     // does this cause a retain cycle? or does __block fix that?
     /* 
      answer: No doesn't cause retain, yes __block prevents it
      
-     In ARC this(marking a variable as a __block) causes the variable to be automatically retained, so that it can be safely referenced within the block implementation. In the previous example, then, aString is sent a retain message when captured in the block context.
+     In ARC this(marking a variable as a __block) causes the variable to be automatically 
+     retained, so that it can be safely referenced within the block implementation. In 
+     the previous example, then, aString is sent a retain message when captured in the block context.
      
-     In the Objective-C and Objective-C++ languages, we allow the __weak specifier for __block variables of object type. [...] This qualifier causes these variables to be kept without retain messages being sent. This knowingly leads to dangling pointers if the Block (or a copy) outlives the lifetime of this object.
+     In the Objective-C and Objective-C++ languages, we allow the __weak specifier for __block 
+     variables of object type. [...] This qualifier causes these variables to be kept without 
+     retain messages being sent. This knowingly leads to dangling pointers if the Block (or a copy) 
+     outlives the lifetime of this object.
      
      see: http://stackoverflow.com/questions/19227982/using-block-and-weak (awesome explanantion)
      
@@ -473,11 +479,11 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 -(NSDictionary *)searchTypeKey{
     if (!_searchTypeKey) {
         _searchTypeKey = @{
-                           
-                           [NSNumber numberWithFloat:summonerName]  :   @"summoner/by-name/",
-                           [NSNumber numberWithFloat:summonerID]    :   @"summoner/",
-                           [NSNumber numberWithFloat:static_data]   :   @"realm"
-                           
+                           @(LoLSearchTypeSummonerName)     :   @"summoner/by-name/",
+                           @(LoLSearchTypeSummonerID)       :   @"summoner/",
+                           @(LoLSearchTypeStatic_data)      :   @"realm",
+                           @(LoLSearchTypeSummonerMasteries):   @"summoner/",
+                           @(LoLSearchTypeSummonerRunes)    :   @"summoner/"
                            };
     }
     return _searchTypeKey;
@@ -485,13 +491,12 @@ typedef NSCachedURLResponse * (^CacheResponse)(NSURLSession *session, NSURLSessi
 -(NSDictionary *)regionKey{
     if (!_regionKey) {
         _regionKey = @{
-                       
-                        [NSNumber numberWithInteger:    northAmerica]   : @"na",
-                        [NSNumber numberWithInteger:    euNordic]       : @"eune",
-                        [NSNumber numberWithInteger:    euWest]         : @"euw",
-                        [NSNumber numberWithInteger:    global]         : @"global",
-                        [NSNumber numberWithInteger:    korea]          : @"kr",
-                        [NSNumber numberWithInteger:    oceanic]        : @"oce"
+                        @(northAmerica)   : @"na",
+                        @(euNordic)       : @"eune",
+                        @(euWest)         : @"euw",
+                        @(global)         : @"global",
+                        @(korea)          : @"kr",
+                        @(oceanic)        : @"oce"
                       };
     }
     return _regionKey;

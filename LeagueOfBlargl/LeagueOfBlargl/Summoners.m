@@ -50,5 +50,10 @@ static NSString * kSummonerLevel = @"level";
     
 }
 
+-(BOOL)isEqual:(Summoners *)summoner{
+    return [self.summonerID isEqualToString:summoner.summonerID] ? YES : NO;
+}
+
+
 
 @end

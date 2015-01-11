@@ -208,7 +208,7 @@ UISearchResultsUpdating, UIScrollViewDelegate>
     if ([searchQuery length]) {
         
         //this method needs to be re-written since the JSON results for a 404 will not work here
-        [self.sharedAPIManager searchRiotFor:summonerName
+        [self.sharedAPIManager searchRiotFor:LoLSearchTypeSummonerName
                        withQuery:searchQuery
                        forRegion:northAmerica
                   withCompletion:^(NSDictionary * jsonResults)

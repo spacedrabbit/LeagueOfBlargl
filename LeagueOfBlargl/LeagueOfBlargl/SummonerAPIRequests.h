@@ -11,6 +11,9 @@
 @interface SummonerAPIRequests : RiotAPIManager
 
 //update this to include id calls
--(void) searchForSummonersByName:(NSString *) summonersSearch completion:(void(^)(BOOL, NSArray *))complete;
+-(void) searchForSummonersByName:   (NSString *) summonersSearch    completion:(void(^)(void))complete;
+-(void) searchForSummonersByID:     (NSString *) summonerIDSearch   completion:(void(^)(void))complete;
+-(void) searchMasteriesForSummoner: (NSString *) summonerID         completion:(void(^)(void))complete;
+-(void) searchRunesForSummoner:     (NSString *) summonerID         completion:(void(^)(void))complete;
 
 @end
